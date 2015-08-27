@@ -17,28 +17,36 @@ type GroupChat struct {
 	Title string  `json:"title"`
 }
 
+type FromUser struct {
+	Id        float64 `json:"id"`
+	FirstName string  `json:"first_name"`
+	LastName  string  `json:"last_name"`
+	Username  string  `json:"username"`
+	Title     string  `json:"title"`
+}
+
 type Chat struct {
 	Id float64 `json:"id"`
 }
 
 type Message struct {
-	MessageId   float64 `josn:"message_id"`
-	From        *User   `json:"from"`
-	Date        float64 `json:"date"`
-	Chat        *Chat   `json:"chat"`
-	ForwardFrom *User   `json:"forward_from"`
-	ForwardDate float64 `json:"forward_date"`
+	Message_Id  int64     `josn:"message_id"`
+	From        *FromUser `json:"from"`
+	Date        float64   `json:"date"`
+	Chat        *Chat     `json:"chat"`
+	ForwardFrom *User     `json:"forward_from,omitempty"`
+	ForwardDate float64   `json:"forward_date,omitempty"`
 	//ReplyToMessage Message     `json:"reply_to_message"`
-	Text     string        `json:"text"`
-	Audio    *Audio        `json:"audio"`
-	Document *Document     `json:"document"`
-	Photo    *[]*PhotoSize `json:"photo"`
-	Sticker  *Sticker      `json:"sticker"`
-	Video    *Video        `json:"video"`
-	Voice    *Voice        `json:"voice"`
-	Caption  string        `json:"caption"`
-	Contact  *Contact      `json:"contact"`
-	Location *Location     `json:"location"`
+	Text     string        `json:"text,omitempty"`
+	Audio    *Audio        `json:"audio,omitempty"`
+	Document *Document     `json:"document,omitempty"`
+	Photo    *[]*PhotoSize `json:"photo,omitempty"`
+	Sticker  *Sticker      `json:"sticker,omitempty"`
+	Video    *Video        `json:"video,omitempty"`
+	Voice    *Voice        `json:"voice,omitempty"`
+	Caption  string        `json:"caption,omitempty"`
+	Contact  *Contact      `json:"contact,omitempty"`
+	Location *Location     `json:"location,omitempty"`
 }
 
 type PhotoSize struct {

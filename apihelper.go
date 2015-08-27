@@ -54,7 +54,6 @@ func sendRequest(method, token, name, path string, params url.Values) ([]byte, e
 	}
 	url := fmt.Sprintf("https://api.telegram.org/bot%s/%s", token, method)
 	req, err := http.NewRequest("POST", url, body)
-	fmt.Println(body)
 	if err != nil {
 		return nil, err
 	}
@@ -140,6 +139,21 @@ func sendMessage(token, chat_id, text, disable_web_page_preview, reply_to_messag
 	payload.Add("chat_id", chat_id)
 	payload.Add("text", text)
 	jsonStr, err := makeRequest("sendMessage", token, "", "", payload)
+	fmt.Printf(string(jsonStr))
+	var msg types.Message
+	err = json.Unmarshal(jsonStr, &msg)
+	if err != nil {
+		return nil, err
+	}
+	return &msg, nil
+}
+
+func forwardMessage(token, chat_id, from_chat_id, message_id string) (*types.Message, error) {
+	payload := url.Values{}
+	payload.Add("chat_id", chat_id)
+	payload.Add("from_chat_id", from_chat_id)
+	payload.Add("message_id", message_id)
+	jsonStr, err := makeRequest("forwardMessage", token, "", "", payload)
 	var msg types.Message
 	err = json.Unmarshal(jsonStr, &msg)
 	if err != nil {
