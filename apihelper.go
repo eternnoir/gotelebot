@@ -139,7 +139,6 @@ func sendMessage(token, chat_id, text, disable_web_page_preview, reply_to_messag
 	payload.Add("chat_id", chat_id)
 	payload.Add("text", text)
 	jsonStr, err := makeRequest("sendMessage", token, "", "", payload)
-	fmt.Printf(string(jsonStr))
 	var msg types.Message
 	err = json.Unmarshal(jsonStr, &msg)
 	if err != nil {

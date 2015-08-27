@@ -17,7 +17,7 @@ type GroupChat struct {
 	Title string  `json:"title"`
 }
 
-type FromUser struct {
+type Chat struct {
 	Id        float64 `json:"id"`
 	FirstName string  `json:"first_name"`
 	LastName  string  `json:"last_name"`
@@ -25,17 +25,13 @@ type FromUser struct {
 	Title     string  `json:"title"`
 }
 
-type Chat struct {
-	Id float64 `json:"id"`
-}
-
 type Message struct {
-	Message_Id  int64     `josn:"message_id"`
-	From        *FromUser `json:"from"`
-	Date        float64   `json:"date"`
-	Chat        *Chat     `json:"chat"`
-	ForwardFrom *User     `json:"forward_from,omitempty"`
-	ForwardDate float64   `json:"forward_date,omitempty"`
+	Message_Id  int64   `josn:"message_id"`
+	From        *User   `json:"from"`
+	Date        float64 `json:"date"`
+	Chat        *Chat   `json:"chat"`
+	ForwardFrom *User   `json:"forward_from,omitempty"`
+	ForwardDate float64 `json:"forward_date,omitempty"`
 	//ReplyToMessage Message     `json:"reply_to_message"`
 	Text     string        `json:"text,omitempty"`
 	Audio    *Audio        `json:"audio,omitempty"`

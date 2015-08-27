@@ -35,8 +35,9 @@ func (bot *TeleBot) GetUpdates(offset, limit, timeout string) ([]*types.Update, 
 	return getUpdates(bot.token, offset, limit, timeout)
 }
 
-func (bot *TeleBot) SendMessage(chatid int, text, disable_web_page_preview, reply_to_message_id, reply_markup string) (*types.Message, error) {
-	return sendMessage(bot.token, strconv.Itoa(chatid), text, disable_web_page_preview, reply_to_message_id, reply_markup)
+func (bot *TeleBot) SendMessage(chatid int, text string, disable_web_page_preview bool,
+	reply_to_message_id, reply_markup string) (*types.Message, error) {
+	return sendMessage(bot.token, strconv.Itoa(chatid), text, strconv.FormatBool(disable_web_page_preview), reply_to_message_id, reply_markup)
 }
 
 func (bot *TeleBot) ForwardMessage(chatid, from_chat_id, message_id int) (*types.Message, error) {
