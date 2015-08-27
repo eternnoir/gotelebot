@@ -7,6 +7,7 @@ import (
 type Bot interface {
 	GetMe() *types.User
 	GetUpdate() []*types.Message
+	StartPolling()
 }
 
 type TeleBot struct {
