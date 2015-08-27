@@ -15,6 +15,17 @@ import (
 	"path/filepath"
 )
 
+func sendGetRequest(method string, token string, params url.Values) ([]byte, error) {
+	url := fmt.Sprintf("https://api.telegram.org/bot%s/%s?%s",
+		token, method, params.Encode())
+
+	resp, err := http.Get(url)
+	if err != nil {
+		return []byte{}, err
+	}
+	return checkResult(resp)
+}
+
 func sendRequest(method, token, name, path string, params url.Values) ([]byte, error) {
 	body := &bytes.Buffer{}
 	writer := multipart.NewWriter(body)
@@ -43,15 +54,11 @@ func sendRequest(method, token, name, path string, params url.Values) ([]byte, e
 	}
 	url := fmt.Sprintf("https://api.telegram.org/bot%s/%s", token, method)
 	req, err := http.NewRequest("POST", url, body)
+	fmt.Println(body)
 	if err != nil {
 		return nil, err
 	}
-	if path == "" {
-		req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
-	} else {
-		req.Header.Add("Content-Type", writer.FormDataContentType())
-	}
-
+	req.Header.Add("Content-Type", writer.FormDataContentType())
 	client := &http.Client{}
 	resp, err := client.Do(req)
 	if err != nil {
@@ -93,7 +100,7 @@ func makeRequest(method, token, name, filepath string, params url.Values) ([]byt
 }
 
 func getMe(token string) (*types.User, error) {
-	jsonStr, err := makeRequest("getMe", token, "", "", url.Values{})
+	jsonStr, err := sendGetRequest("getMe", token, url.Values{})
 	if err != nil {
 		return nil, err
 	}
@@ -116,7 +123,7 @@ func getUpdates(token, offset, limit, timeout string) ([]*types.Update, error) {
 	if timeout != "" {
 		payload.Add("timeout", timeout)
 	}
-	jsonStr, err := makeRequest("getUpdates", token, "", "", payload)
+	jsonStr, err := sendGetRequest("getUpdates", token, payload)
 	if err != nil {
 		return nil, err
 	}
@@ -126,4 +133,17 @@ func getUpdates(token, offset, limit, timeout string) ([]*types.Update, error) {
 		return nil, err
 	}
 	return result, nil
+}
+
+func sendMessage(token, chat_id, text, disable_web_page_preview, reply_to_message_id, reply_markup string) (*types.Message, error) {
+	payload := url.Values{}
+	payload.Add("chat_id", chat_id)
+	payload.Add("text", text)
+	jsonStr, err := makeRequest("sendMessage", token, "", "", payload)
+	var msg types.Message
+	err = json.Unmarshal(jsonStr, &msg)
+	if err != nil {
+		return nil, err
+	}
+	return &msg, nil
 }
