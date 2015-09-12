@@ -43,6 +43,10 @@ func (bot *TeleBot) ForwardMessage(chatid, from_chat_id, message_id int) (*types
 	return forwardMessage(bot.token, strconv.Itoa(chatid), strconv.Itoa(from_chat_id), strconv.Itoa(message_id))
 }
 
+func (bot *TeleBot) SendPhoto(chatid int, photo string, opt *SendPhotoOptional) (*types.Message, error) {
+	return sendPhoto(bot.token, strconv.Itoa(chatid), photo, opt)
+}
+
 func (bot *TeleBot) StartPolling(nonStop bool) error {
 	for {
 		newUpdates, err := bot.GetUpdates(strconv.Itoa(int(bot.Offset)), "", "")

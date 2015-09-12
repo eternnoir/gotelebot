@@ -1,6 +1,7 @@
 package gotelebot
 
 import (
+	"fmt"
 	"github.com/stretchr/testify/assert"
 	"os"
 	"strconv"
@@ -58,4 +59,18 @@ func TestForwardMessage(t *testing.T) {
 	}
 	assert.NotEmpty(msg.ForwardFrom)
 
+}
+
+func TestSendPhoto(t *testing.T) {
+	assert := assert.New(t)
+	token := os.Getenv("TOKEN")
+	chatid, _ := strconv.Atoi(os.Getenv("CHAT"))
+	bot := InitTeleBot(token)
+	filePath := "./test_data/go.png"
+	msg, err := bot.SendPhoto(chatid, filePath, nil)
+	if err != nil {
+		fmt.Println(err)
+		assert.Fail("Bot sendPhoto error ")
+	}
+	assert.NotEmpty(msg.Photo)
 }

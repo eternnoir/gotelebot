@@ -142,12 +142,10 @@ func sendMessage(token, chat_id, text string, opt *SendMessageOptional) (*types.
 		opt.AppendPayload(&payload)
 	}
 	jsonStr, err := makeRequest("sendMessage", token, "", "", payload)
-	var msg types.Message
-	err = json.Unmarshal(jsonStr, &msg)
 	if err != nil {
 		return nil, err
 	}
-	return &msg, nil
+	return transformToMessage(jsonStr)
 }
 
 func forwardMessage(token, chat_id, from_chat_id, message_id string) (*types.Message, error) {
@@ -164,7 +162,33 @@ func forwardMessage(token, chat_id, from_chat_id, message_id string) (*types.Mes
 	return &msg, nil
 }
 
-/*
-func sendPhoto(token, chat_id, photo, caption, reply_to_message_id, reply_markup string) (*types.Message, error) {
+func sendPhoto(token, chat_id, photo string, opt *SendPhotoOptional) (*types.Message, error) {
+	payload := url.Values{}
+	filepath := ""
+	formname := ""
+	payload.Add("chat_id", chat_id)
+	if _, err := os.Stat(photo); err == nil {
+		filepath = photo
+		formname = "photo"
+	}
+	if filepath != "" { // Use telegram fileid
+		payload.Add("photo", photo)
+	}
+	if opt != nil {
+		opt.AppendPayload(&payload)
+	}
+	jsonStr, err := makeRequest("sendPhoto", token, formname, filepath, payload)
+	if err != nil {
+		return nil, err
+	}
+	return transformToMessage(jsonStr)
+}
 
-}*/
+func transformToMessage(jsonStr []byte) (*types.Message, error) {
+	var msg types.Message
+	err := json.Unmarshal(jsonStr, &msg)
+	if err != nil {
+		return nil, err
+	}
+	return &msg, nil
+}

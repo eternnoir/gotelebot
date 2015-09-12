@@ -30,3 +30,12 @@ func (opt *SendMessageOptional) AppendPayload(payload *url.Values) {
 		payload.Add("parse_mode", *opt.ParseMode)
 	}
 }
+
+type SendPhotoOptional struct {
+	Caption          *string
+	ReplyToMessageId *int
+	ReplyMarkup      *interface{}
+}
+
+func (opt *SendPhotoOptional) AppendPayload(payload *url.Values) {
+}
