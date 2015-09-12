@@ -24,7 +24,23 @@ func TestSendMessage(t *testing.T) {
 	chatid, _ := strconv.Atoi(os.Getenv("CHAT"))
 	bot := InitTeleBot(token)
 	testMsg := "Test Msg"
-	msg, err := bot.SendMessage(chatid, testMsg, false, "", "")
+	msg, err := bot.SendMessage(chatid, testMsg, nil)
+	if err != nil {
+		assert.Fail("Bot send message error")
+	}
+	assert.EqualValues(testMsg, msg.Text)
+}
+
+func TestSendMessageWithOpt(t *testing.T) {
+	assert := assert.New(t)
+	token := os.Getenv("TOKEN")
+	chatid, _ := strconv.Atoi(os.Getenv("CHAT"))
+	bot := InitTeleBot(token)
+	testMsg := "Test Msg"
+	dis := true
+	replayId := 267
+	opt := &SendMessageOptional{DisableWebPagePreview: &dis, ReplyToMessageId: &replayId}
+	msg, err := bot.SendMessage(chatid, testMsg, opt)
 	if err != nil {
 		assert.Fail("Bot send message error")
 	}

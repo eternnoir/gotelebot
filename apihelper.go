@@ -134,10 +134,13 @@ func getUpdates(token, offset, limit, timeout string) ([]*types.Update, error) {
 	return result, nil
 }
 
-func sendMessage(token, chat_id, text, disable_web_page_preview, reply_to_message_id, reply_markup string) (*types.Message, error) {
+func sendMessage(token, chat_id, text string, opt *SendMessageOptional) (*types.Message, error) {
 	payload := url.Values{}
 	payload.Add("chat_id", chat_id)
 	payload.Add("text", text)
+	if opt != nil {
+		opt.AppendPayload(&payload)
+	}
 	jsonStr, err := makeRequest("sendMessage", token, "", "", payload)
 	var msg types.Message
 	err = json.Unmarshal(jsonStr, &msg)
@@ -160,3 +163,8 @@ func forwardMessage(token, chat_id, from_chat_id, message_id string) (*types.Mes
 	}
 	return &msg, nil
 }
+
+/*
+func sendPhoto(token, chat_id, photo, caption, reply_to_message_id, reply_markup string) (*types.Message, error) {
+
+}*/
