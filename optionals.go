@@ -38,4 +38,13 @@ type SendPhotoOptional struct {
 }
 
 func (opt *SendPhotoOptional) AppendPayload(payload *url.Values) {
+	if opt.Caption != nil {
+		payload.Add("caption", *opt.Caption)
+	}
+	if opt.ReplyToMessageId != nil {
+		payload.Add("reply_to_message_id", strconv.Itoa(*opt.ReplyToMessageId))
+	}
+	if opt.ReplyMarkup != nil {
+		payload.Add("parse_mode", *opt.ParseMode)
+	}
 }
