@@ -171,7 +171,7 @@ func sendAudio(token, chat_id, audio string, opt *SendAudioOptional) (*types.Mes
 	return sendFile(token, chat_id, "sendAudio", "audio", audio, opt)
 }
 
-func sendDocument(token, chat_id, document string, opt *SendAudioOptional) (*types.Message, error) {
+func sendDocument(token, chat_id, document string, opt *SendDocumentOptional) (*types.Message, error) {
 	return sendFile(token, chat_id, "sendDocument", "document", document, opt)
 }
 

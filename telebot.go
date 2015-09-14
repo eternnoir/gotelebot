@@ -51,6 +51,10 @@ func (bot *TeleBot) SendAudio(chatid int, audio string, opt *SendAudioOptional) 
 	return sendAudio(bot.token, strconv.Itoa(chatid), audio, opt)
 }
 
+func (bot *TeleBot) SendDocument(chatid int, document string, opt *SendDocumentOptional) (*types.Message, error) {
+	return sendDocument(bot.token, strconv.Itoa(chatid), document, opt)
+}
+
 func (bot *TeleBot) StartPolling(nonStop bool) error {
 	for {
 		newUpdates, err := bot.GetUpdates(strconv.Itoa(int(bot.Offset)), "", "")

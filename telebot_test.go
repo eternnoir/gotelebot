@@ -136,3 +136,17 @@ func TestSendAudioWithOpt(t *testing.T) {
 	}
 	assert.Equal(msg.Audio.Title, title)
 }
+
+func TestSendDocument(t *testing.T) {
+	assert := assert.New(t)
+	token := os.Getenv("TOKEN")
+	chatid, _ := strconv.Atoi(os.Getenv("CHAT"))
+	bot := InitTeleBot(token)
+	filePath := "./test_data/go.png"
+	msg, err := bot.SendDocument(chatid, filePath, nil)
+	if err != nil {
+		fmt.Println(err)
+		assert.Fail("Bot sendDocument error ")
+	}
+	assert.NotEmpty(msg.Document.FileId)
+}
