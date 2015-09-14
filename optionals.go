@@ -6,7 +6,7 @@ import (
 )
 
 type Optional interface {
-	AppendPayload(payload *map[string][]string)
+	AppendPayload(payload *url.Values)
 }
 
 type SendMessageOptional struct {
@@ -64,6 +64,17 @@ func (opt *SendAudioOptional) AppendPayload(payload *url.Values) {
 	if opt.Title != nil {
 		payload.Add("title", *opt.Title)
 	}
+	if opt.ReplyToMessageId != nil {
+		payload.Add("reply_to_message_id", strconv.Itoa(*opt.ReplyToMessageId))
+	}
+}
+
+type SendDocumentOptional struct {
+	ReplyToMessageId *int
+	ReplyMarkup      *interface{}
+}
+
+func (opt *SendDocumentOptional) AppendPayload(payload *url.Values) {
 	if opt.ReplyToMessageId != nil {
 		payload.Add("reply_to_message_id", strconv.Itoa(*opt.ReplyToMessageId))
 	}

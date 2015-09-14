@@ -13,6 +13,7 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
+	"reflect"
 )
 
 func sendGetRequest(method string, token string, params url.Values) ([]byte, error) {
@@ -163,43 +164,33 @@ func forwardMessage(token, chat_id, from_chat_id, message_id string) (*types.Mes
 }
 
 func sendPhoto(token, chat_id, photo string, opt *SendPhotoOptional) (*types.Message, error) {
-	payload := url.Values{}
-	filepath := ""
-	formname := ""
-	payload.Add("chat_id", chat_id)
-	if _, err := os.Stat(photo); err == nil {
-		filepath = photo
-		formname = "photo"
-	}
-	if filepath == "" { // Use telegram fileid
-		payload.Add("photo", photo)
-	}
-	if opt != nil {
-		opt.AppendPayload(&payload)
-	}
-	jsonStr, err := makeRequest("sendPhoto", token, formname, filepath, payload)
-	if err != nil {
-		return nil, err
-	}
-	return transformToMessage(jsonStr)
+	return sendFile(token, chat_id, "sendPhoto", "photo", photo, opt)
 }
 
 func sendAudio(token, chat_id, audio string, opt *SendAudioOptional) (*types.Message, error) {
+	return sendFile(token, chat_id, "sendAudio", "audio", audio, opt)
+}
+
+func sendDocument(token, chat_id, document string, opt *SendAudioOptional) (*types.Message, error) {
+	return sendFile(token, chat_id, "sendDocument", "document", document, opt)
+}
+
+func sendFile(token, chat_id, methodname, typename, file string, opt Optional) (*types.Message, error) {
 	payload := url.Values{}
 	filepath := ""
 	formname := ""
 	payload.Add("chat_id", chat_id)
-	if _, err := os.Stat(audio); err == nil {
-		filepath = audio
-		formname = "audio"
+	if _, err := os.Stat(file); err == nil {
+		filepath = file
+		formname = typename
 	}
 	if filepath == "" { // Use telegram fileid
-		payload.Add("audio", audio)
+		payload.Add(typename, file)
 	}
-	if opt != nil {
+	if !reflect.ValueOf(opt).IsNil() { // Check interface conatain nil
 		opt.AppendPayload(&payload)
 	}
-	jsonStr, err := makeRequest("sendAudio", token, formname, filepath, payload)
+	jsonStr, err := makeRequest(methodname, token, formname, filepath, payload)
 	if err != nil {
 		return nil, err
 	}
