@@ -44,7 +44,27 @@ func (opt *SendPhotoOptional) AppendPayload(payload *url.Values) {
 	if opt.ReplyToMessageId != nil {
 		payload.Add("reply_to_message_id", strconv.Itoa(*opt.ReplyToMessageId))
 	}
-	if opt.ReplyMarkup != nil {
-		payload.Add("parse_mode", *opt.ParseMode)
+}
+
+type SendAudioOptional struct {
+	Duration         *int
+	Performer        *string
+	Title            *string
+	ReplyToMessageId *int
+	ReplyMarkup      *interface{}
+}
+
+func (opt *SendAudioOptional) AppendPayload(payload *url.Values) {
+	if opt.Duration != nil {
+		payload.Add("duration", strconv.Itoa(*opt.Duration))
+	}
+	if opt.Performer != nil {
+		payload.Add("performer", *opt.Performer)
+	}
+	if opt.Title != nil {
+		payload.Add("title", *opt.Title)
+	}
+	if opt.ReplyToMessageId != nil {
+		payload.Add("reply_to_message_id", strconv.Itoa(*opt.ReplyToMessageId))
 	}
 }

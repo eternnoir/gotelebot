@@ -47,6 +47,10 @@ func (bot *TeleBot) SendPhoto(chatid int, photo string, opt *SendPhotoOptional) 
 	return sendPhoto(bot.token, strconv.Itoa(chatid), photo, opt)
 }
 
+func (bot *TeleBot) SendAudio(chatid int, audio string, opt *SendAudioOptional) (*types.Message, error) {
+	return sendAudio(bot.token, strconv.Itoa(chatid), audio, opt)
+}
+
 func (bot *TeleBot) StartPolling(nonStop bool) error {
 	for {
 		newUpdates, err := bot.GetUpdates(strconv.Itoa(int(bot.Offset)), "", "")

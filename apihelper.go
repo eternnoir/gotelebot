@@ -171,13 +171,35 @@ func sendPhoto(token, chat_id, photo string, opt *SendPhotoOptional) (*types.Mes
 		filepath = photo
 		formname = "photo"
 	}
-	if filepath != "" { // Use telegram fileid
+	if filepath == "" { // Use telegram fileid
 		payload.Add("photo", photo)
 	}
 	if opt != nil {
 		opt.AppendPayload(&payload)
 	}
 	jsonStr, err := makeRequest("sendPhoto", token, formname, filepath, payload)
+	if err != nil {
+		return nil, err
+	}
+	return transformToMessage(jsonStr)
+}
+
+func sendAudio(token, chat_id, audio string, opt *SendAudioOptional) (*types.Message, error) {
+	payload := url.Values{}
+	filepath := ""
+	formname := ""
+	payload.Add("chat_id", chat_id)
+	if _, err := os.Stat(audio); err == nil {
+		filepath = audio
+		formname = "audio"
+	}
+	if filepath == "" { // Use telegram fileid
+		payload.Add("audio", audio)
+	}
+	if opt != nil {
+		opt.AppendPayload(&payload)
+	}
+	jsonStr, err := makeRequest("sendAudio", token, formname, filepath, payload)
 	if err != nil {
 		return nil, err
 	}

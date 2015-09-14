@@ -58,7 +58,7 @@ type Audio struct {
 	Performer string  `json:"performer"`
 	Title     string  `json:"title"`
 	MimeType  string  `json:"mime_type"`
-	FileSize  string  `json:"file_size"`
+	FileSize  int64   `json:"file_size"`
 }
 
 type Document struct {
@@ -91,7 +91,7 @@ type Voice struct {
 	FileId   string  `json:"file_id"`
 	Duration float64 `json:"duration"`
 	MimeType string  `json:"mime_type"`
-	FileSize string  `json:"file_size"`
+	FileSize float64 `json:"file_size"`
 }
 
 type Contact struct {

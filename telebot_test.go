@@ -74,3 +74,65 @@ func TestSendPhoto(t *testing.T) {
 	}
 	assert.NotEmpty(msg.Photo)
 }
+
+func TestSendPhotoWithFileId(t *testing.T) {
+	assert := assert.New(t)
+	token := os.Getenv("TOKEN")
+	chatid, _ := strconv.Atoi(os.Getenv("CHAT"))
+	bot := InitTeleBot(token)
+	fileId := "AgADBQADs6gxG8YifgZH1dV8JXYjR1-qszIABHpP-G3navK5NYEAAgI"
+	msg, err := bot.SendPhoto(chatid, fileId, nil)
+	if err != nil {
+		fmt.Println(err)
+		assert.Fail("Bot sendPhoto error ")
+	}
+	assert.NotEmpty(msg.Photo)
+}
+
+func TestSendPhotoWithOpt(t *testing.T) {
+	assert := assert.New(t)
+	token := os.Getenv("TOKEN")
+	chatid, _ := strconv.Atoi(os.Getenv("CHAT"))
+	bot := InitTeleBot(token)
+	filePath := "./test_data/go.png"
+	rsi := 267
+	opt := &SendPhotoOptional{ReplyToMessageId: &rsi}
+	msg, err := bot.SendPhoto(chatid, filePath, opt)
+	if err != nil {
+		fmt.Println(err)
+		assert.Fail("Bot sendPhoto error ")
+	}
+	assert.NotEmpty(msg.Photo)
+}
+
+func TestSendAudio(t *testing.T) {
+	assert := assert.New(t)
+	token := os.Getenv("TOKEN")
+	chatid, _ := strconv.Atoi(os.Getenv("CHAT"))
+	bot := InitTeleBot(token)
+	filePath := "./test_data/record.mp3"
+	msg, err := bot.SendAudio(chatid, filePath, nil)
+	if err != nil {
+		fmt.Println(err)
+		assert.Fail("Bot sendAudio error ")
+	}
+	assert.NotEmpty(msg)
+}
+
+func TestSendAudioWithOpt(t *testing.T) {
+	assert := assert.New(t)
+	token := os.Getenv("TOKEN")
+	chatid, _ := strconv.Atoi(os.Getenv("CHAT"))
+	bot := InitTeleBot(token)
+	performer := "tele"
+	title := "gram"
+	rsi := 267
+	opt := &SendAudioOptional{Performer: &performer, Title: &title, ReplyToMessageId: &rsi}
+	filePath := "./test_data/record.mp3"
+	msg, err := bot.SendAudio(chatid, filePath, opt)
+	if err != nil {
+		fmt.Println(err)
+		assert.Fail("Bot sendAudio error ")
+	}
+	assert.Equal(msg.Audio.Title, title)
+}
