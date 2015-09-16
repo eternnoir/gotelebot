@@ -192,3 +192,15 @@ func TestSendLocation(t *testing.T) {
 	}
 	assert.NotEmpty(msg.Location.Latitude)
 }
+
+func TestSendChatAction(t *testing.T) {
+	assert := assert.New(t)
+	token := os.Getenv("TOKEN")
+	chatid, _ := strconv.Atoi(os.Getenv("CHAT"))
+	bot := InitTeleBot(token)
+	msg, err := bot.SendChatAction(chatid, "typing")
+	if err != nil {
+		assert.Fail("Bot send ChatAction error")
+	}
+	fmt.Println(msg)
+}

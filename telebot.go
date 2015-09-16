@@ -14,9 +14,10 @@ type Bot interface {
 }
 
 type TeleBot struct {
-	token    string
-	Messages chan (*types.Message)
-	Offset   float64
+	token           string
+	Messages        chan (*types.Message)
+	Offset          float64
+	stopPollingFlag bool
 }
 
 func InitTeleBot(botToken string) *TeleBot {
@@ -66,9 +67,20 @@ func (bot *TeleBot) SendVideo(chatid int, video string, opt *SendVideoOptional) 
 func (bot *TeleBot) SendLocation(chatid int, latitude, longitude float64, opt *SendLocationOptional) (*types.Message, error) {
 	return sendLocation(bot.token, strconv.Itoa(chatid), strconv.FormatFloat(latitude, 'f', 6, 64), strconv.FormatFloat(longitude, 'f', 6, 64), opt)
 }
+func (bot *TeleBot) SendChatAction(chatid int, action string) (string, error) {
+	return sendChatAction(bot.token, strconv.Itoa(chatid), action)
+}
+
+func (bot *TeleBot) StopPolling() {
+	bot.stopPollingFlag = true
+}
 
 func (bot *TeleBot) StartPolling(nonStop bool) error {
+	bot.stopPollingFlag = false
 	for {
+		if bot.stopPollingFlag == true {
+			return nil
+		}
 		newUpdates, err := bot.GetUpdates(strconv.Itoa(int(bot.Offset)), "", "")
 		if err != nil {
 			if !nonStop {

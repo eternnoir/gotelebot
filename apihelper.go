@@ -197,6 +197,18 @@ func sendLocation(token, chat_id, latitude, longitude string, opt *SendLocationO
 	return transformToMessage(jsonStr)
 }
 
+func sendChatAction(token, chat_id, action string) (string, error) {
+	payload := url.Values{}
+	payload.Add("chat_id", chat_id)
+	payload.Add("action", action)
+	jsonStr, err := makeRequest("sendChatAction", token, "", "", payload)
+	if err != nil {
+		return "", err
+	}
+	ret := string(jsonStr[:])
+	return ret, nil
+}
+
 func sendFile(token, chat_id, methodname, typename, file string, opt Optional) (*types.Message, error) {
 	payload := url.Values{}
 	filepath := ""
