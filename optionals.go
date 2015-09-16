@@ -109,3 +109,14 @@ func (opt *SendVideoOptional) AppendPayload(payload *url.Values) {
 		payload.Add("reply_to_message_id", strconv.Itoa(*opt.ReplyToMessageId))
 	}
 }
+
+type SendLocationOptional struct {
+	ReplyToMessageId *int
+	ReplyMarkup      *interface{}
+}
+
+func (opt *SendLocationOptional) AppendPayload(payload *url.Values) {
+	if opt.ReplyToMessageId != nil {
+		payload.Add("reply_to_message_id", strconv.Itoa(*opt.ReplyToMessageId))
+	}
+}

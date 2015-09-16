@@ -178,3 +178,17 @@ func TestSendVideo(t *testing.T) {
 	}
 	assert.NotEmpty(msg.Video.FileId)
 }
+
+func TestSendLocation(t *testing.T) {
+	assert := assert.New(t)
+	token := os.Getenv("TOKEN")
+	chatid, _ := strconv.Atoi(os.Getenv("CHAT"))
+	bot := InitTeleBot(token)
+	lat := 26.3875591
+	lon := -161.2901042
+	msg, err := bot.SendLocation(chatid, lat, lon, nil)
+	if err != nil {
+		assert.Fail("Bot send Location error")
+	}
+	assert.NotEmpty(msg.Location.Latitude)
+}

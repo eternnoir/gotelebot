@@ -63,6 +63,10 @@ func (bot *TeleBot) SendVideo(chatid int, video string, opt *SendVideoOptional) 
 	return sendVideo(bot.token, strconv.Itoa(chatid), video, opt)
 }
 
+func (bot *TeleBot) SendLocation(chatid int, latitude, longitude float64, opt *SendLocationOptional) (*types.Message, error) {
+	return sendLocation(bot.token, strconv.Itoa(chatid), strconv.FormatFloat(latitude, 'f', 6, 64), strconv.FormatFloat(longitude, 'f', 6, 64), opt)
+}
+
 func (bot *TeleBot) StartPolling(nonStop bool) error {
 	for {
 		newUpdates, err := bot.GetUpdates(strconv.Itoa(int(bot.Offset)), "", "")
