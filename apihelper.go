@@ -13,6 +13,7 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
+	"reflect"
 )
 
 func sendGetRequest(method string, token string, params url.Values) ([]byte, error) {
@@ -134,17 +135,18 @@ func getUpdates(token, offset, limit, timeout string) ([]*types.Update, error) {
 	return result, nil
 }
 
-func sendMessage(token, chat_id, text, disable_web_page_preview, reply_to_message_id, reply_markup string) (*types.Message, error) {
+func sendMessage(token, chat_id, text string, opt *SendMessageOptional) (*types.Message, error) {
 	payload := url.Values{}
 	payload.Add("chat_id", chat_id)
 	payload.Add("text", text)
+	if opt != nil {
+		opt.AppendPayload(&payload)
+	}
 	jsonStr, err := makeRequest("sendMessage", token, "", "", payload)
-	var msg types.Message
-	err = json.Unmarshal(jsonStr, &msg)
 	if err != nil {
 		return nil, err
 	}
-	return &msg, nil
+	return transformToMessage(jsonStr)
 }
 
 func forwardMessage(token, chat_id, from_chat_id, message_id string) (*types.Message, error) {
@@ -155,6 +157,83 @@ func forwardMessage(token, chat_id, from_chat_id, message_id string) (*types.Mes
 	jsonStr, err := makeRequest("forwardMessage", token, "", "", payload)
 	var msg types.Message
 	err = json.Unmarshal(jsonStr, &msg)
+	if err != nil {
+		return nil, err
+	}
+	return &msg, nil
+}
+
+func sendPhoto(token, chat_id, photo string, opt *SendPhotoOptional) (*types.Message, error) {
+	return sendFile(token, chat_id, "sendPhoto", "photo", photo, opt)
+}
+
+func sendAudio(token, chat_id, audio string, opt *SendAudioOptional) (*types.Message, error) {
+	return sendFile(token, chat_id, "sendAudio", "audio", audio, opt)
+}
+
+func sendDocument(token, chat_id, document string, opt *SendDocumentOptional) (*types.Message, error) {
+	return sendFile(token, chat_id, "sendDocument", "document", document, opt)
+}
+
+func sendSticker(token, chat_id, sticker string, opt *SendStickerOptional) (*types.Message, error) {
+	return sendFile(token, chat_id, "sendSticker", "sticker", sticker, opt)
+}
+
+func sendVideo(token, chat_id, video string, opt *SendVideoOptional) (*types.Message, error) {
+	return sendFile(token, chat_id, "sendVideo", "video", video, opt)
+}
+func sendLocation(token, chat_id, latitude, longitude string, opt *SendLocationOptional) (*types.Message, error) {
+	payload := url.Values{}
+	payload.Add("chat_id", chat_id)
+	payload.Add("latitude", latitude)
+	payload.Add("longitude", longitude)
+	if opt != nil {
+		opt.AppendPayload(&payload)
+	}
+	jsonStr, err := makeRequest("sendLocation", token, "", "", payload)
+	if err != nil {
+		return nil, err
+	}
+	return transformToMessage(jsonStr)
+}
+
+func sendChatAction(token, chat_id, action string) (string, error) {
+	payload := url.Values{}
+	payload.Add("chat_id", chat_id)
+	payload.Add("action", action)
+	jsonStr, err := makeRequest("sendChatAction", token, "", "", payload)
+	if err != nil {
+		return "", err
+	}
+	ret := string(jsonStr[:])
+	return ret, nil
+}
+
+func sendFile(token, chat_id, methodname, typename, file string, opt Optional) (*types.Message, error) {
+	payload := url.Values{}
+	filepath := ""
+	formname := ""
+	payload.Add("chat_id", chat_id)
+	if _, err := os.Stat(file); err == nil {
+		filepath = file
+		formname = typename
+	}
+	if filepath == "" { // Use telegram fileid
+		payload.Add(typename, file)
+	}
+	if !reflect.ValueOf(opt).IsNil() { // Check interface conatain nil
+		opt.AppendPayload(&payload)
+	}
+	jsonStr, err := makeRequest(methodname, token, formname, filepath, payload)
+	if err != nil {
+		return nil, err
+	}
+	return transformToMessage(jsonStr)
+}
+
+func transformToMessage(jsonStr []byte) (*types.Message, error) {
+	var msg types.Message
+	err := json.Unmarshal(jsonStr, &msg)
 	if err != nil {
 		return nil, err
 	}

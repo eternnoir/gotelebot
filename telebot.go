@@ -14,9 +14,10 @@ type Bot interface {
 }
 
 type TeleBot struct {
-	token    string
-	Messages chan (*types.Message)
-	Offset   float64
+	token           string
+	Messages        chan (*types.Message)
+	Offset          float64
+	stopPollingFlag bool
 }
 
 func InitTeleBot(botToken string) *TeleBot {
@@ -35,17 +36,51 @@ func (bot *TeleBot) GetUpdates(offset, limit, timeout string) ([]*types.Update, 
 	return getUpdates(bot.token, offset, limit, timeout)
 }
 
-func (bot *TeleBot) SendMessage(chatid int, text string, disable_web_page_preview bool,
-	reply_to_message_id, reply_markup string) (*types.Message, error) {
-	return sendMessage(bot.token, strconv.Itoa(chatid), text, strconv.FormatBool(disable_web_page_preview), reply_to_message_id, reply_markup)
+func (bot *TeleBot) SendMessage(chatid int, text string, opt *SendMessageOptional) (*types.Message, error) {
+	return sendMessage(bot.token, strconv.Itoa(chatid), text, opt)
 }
 
 func (bot *TeleBot) ForwardMessage(chatid, from_chat_id, message_id int) (*types.Message, error) {
 	return forwardMessage(bot.token, strconv.Itoa(chatid), strconv.Itoa(from_chat_id), strconv.Itoa(message_id))
 }
 
+func (bot *TeleBot) SendPhoto(chatid int, photo string, opt *SendPhotoOptional) (*types.Message, error) {
+	return sendPhoto(bot.token, strconv.Itoa(chatid), photo, opt)
+}
+
+func (bot *TeleBot) SendAudio(chatid int, audio string, opt *SendAudioOptional) (*types.Message, error) {
+	return sendAudio(bot.token, strconv.Itoa(chatid), audio, opt)
+}
+
+func (bot *TeleBot) SendDocument(chatid int, document string, opt *SendDocumentOptional) (*types.Message, error) {
+	return sendDocument(bot.token, strconv.Itoa(chatid), document, opt)
+}
+
+func (bot *TeleBot) SendSticker(chatid int, sticker string, opt *SendStickerOptional) (*types.Message, error) {
+	return sendSticker(bot.token, strconv.Itoa(chatid), sticker, opt)
+}
+
+func (bot *TeleBot) SendVideo(chatid int, video string, opt *SendVideoOptional) (*types.Message, error) {
+	return sendVideo(bot.token, strconv.Itoa(chatid), video, opt)
+}
+
+func (bot *TeleBot) SendLocation(chatid int, latitude, longitude float64, opt *SendLocationOptional) (*types.Message, error) {
+	return sendLocation(bot.token, strconv.Itoa(chatid), strconv.FormatFloat(latitude, 'f', 6, 64), strconv.FormatFloat(longitude, 'f', 6, 64), opt)
+}
+func (bot *TeleBot) SendChatAction(chatid int, action string) (string, error) {
+	return sendChatAction(bot.token, strconv.Itoa(chatid), action)
+}
+
+func (bot *TeleBot) StopPolling() {
+	bot.stopPollingFlag = true
+}
+
 func (bot *TeleBot) StartPolling(nonStop bool) error {
+	bot.stopPollingFlag = false
 	for {
+		if bot.stopPollingFlag == true {
+			return nil
+		}
 		newUpdates, err := bot.GetUpdates(strconv.Itoa(int(bot.Offset)), "", "")
 		if err != nil {
 			if !nonStop {
