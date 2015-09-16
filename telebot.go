@@ -59,6 +59,10 @@ func (bot *TeleBot) SendSticker(chatid int, sticker string, opt *SendStickerOpti
 	return sendSticker(bot.token, strconv.Itoa(chatid), sticker, opt)
 }
 
+func (bot *TeleBot) SendVideo(chatid int, video string, opt *SendVideoOptional) (*types.Message, error) {
+	return sendVideo(bot.token, strconv.Itoa(chatid), video, opt)
+}
+
 func (bot *TeleBot) StartPolling(nonStop bool) error {
 	for {
 		newUpdates, err := bot.GetUpdates(strconv.Itoa(int(bot.Offset)), "", "")

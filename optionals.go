@@ -90,3 +90,22 @@ func (opt *SendStickerOptional) AppendPayload(payload *url.Values) {
 		payload.Add("reply_to_message_id", strconv.Itoa(*opt.ReplyToMessageId))
 	}
 }
+
+type SendVideoOptional struct {
+	Duration         *int
+	Caption          *string
+	ReplyToMessageId *int
+	ReplyMarkup      *interface{}
+}
+
+func (opt *SendVideoOptional) AppendPayload(payload *url.Values) {
+	if opt.Duration != nil {
+		payload.Add("duration", strconv.Itoa(*opt.Duration))
+	}
+	if opt.Caption != nil {
+		payload.Add("caption", *opt.Caption)
+	}
+	if opt.ReplyToMessageId != nil {
+		payload.Add("reply_to_message_id", strconv.Itoa(*opt.ReplyToMessageId))
+	}
+}

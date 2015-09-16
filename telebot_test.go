@@ -164,3 +164,17 @@ func TestSendSticker(t *testing.T) {
 	}
 	assert.NotEmpty(msg.Sticker.FileId)
 }
+
+func TestSendVideo(t *testing.T) {
+	assert := assert.New(t)
+	token := os.Getenv("TOKEN")
+	chatid, _ := strconv.Atoi(os.Getenv("CHAT"))
+	bot := InitTeleBot(token)
+	filePath := "./test_data/test_video.mp4"
+	msg, err := bot.SendVideo(chatid, filePath, nil)
+	if err != nil {
+		fmt.Println(err)
+		assert.Fail("Bot sendVideo error ")
+	}
+	assert.NotEmpty(msg.Video.FileId)
+}

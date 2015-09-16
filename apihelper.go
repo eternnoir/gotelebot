@@ -179,6 +179,10 @@ func sendSticker(token, chat_id, sticker string, opt *SendStickerOptional) (*typ
 	return sendFile(token, chat_id, "sendSticker", "sticker", sticker, opt)
 }
 
+func sendVideo(token, chat_id, video string, opt *SendVideoOptional) (*types.Message, error) {
+	return sendFile(token, chat_id, "sendVideo", "video", video, opt)
+}
+
 func sendFile(token, chat_id, methodname, typename, file string, opt Optional) (*types.Message, error) {
 	payload := url.Values{}
 	filepath := ""
