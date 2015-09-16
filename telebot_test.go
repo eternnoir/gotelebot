@@ -150,3 +150,17 @@ func TestSendDocument(t *testing.T) {
 	}
 	assert.NotEmpty(msg.Document.FileId)
 }
+
+func TestSendSticker(t *testing.T) {
+	assert := assert.New(t)
+	token := os.Getenv("TOKEN")
+	chatid, _ := strconv.Atoi(os.Getenv("CHAT"))
+	bot := InitTeleBot(token)
+	filePath := "./test_data/go.webp"
+	msg, err := bot.SendSticker(chatid, filePath, nil)
+	if err != nil {
+		fmt.Println(err)
+		assert.Fail("Bot sendStick error ")
+	}
+	assert.NotEmpty(msg.Sticker.FileId)
+}

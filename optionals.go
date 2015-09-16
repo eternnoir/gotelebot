@@ -79,3 +79,14 @@ func (opt *SendDocumentOptional) AppendPayload(payload *url.Values) {
 		payload.Add("reply_to_message_id", strconv.Itoa(*opt.ReplyToMessageId))
 	}
 }
+
+type SendStickerOptional struct {
+	ReplyToMessageId *int
+	ReplyMarkup      *interface{}
+}
+
+func (opt *SendStickerOptional) AppendPayload(payload *url.Values) {
+	if opt.ReplyToMessageId != nil {
+		payload.Add("reply_to_message_id", strconv.Itoa(*opt.ReplyToMessageId))
+	}
+}
