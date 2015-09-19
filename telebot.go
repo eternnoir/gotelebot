@@ -23,10 +23,12 @@ func InitTeleBot(botToken string) *TeleBot {
 	return bot
 }
 
+// GetMe Returns basic information about the bot in form of a User object.
 func (bot *TeleBot) GetMe() (*types.User, error) {
 	return getMe(bot.token)
 }
 
+// GetUpdates Use this method to receive incoming updates using long polling. An Array of Update objects is returned.
 func (bot *TeleBot) GetUpdates(offset, limit, timeout string) ([]*types.Update, error) {
 	return getUpdates(bot.token, offset, limit, timeout)
 }
