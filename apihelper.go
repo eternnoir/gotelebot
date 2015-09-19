@@ -209,6 +209,21 @@ func sendChatAction(token, chat_id, action string) (string, error) {
 	return ret, nil
 }
 
+func getFile(token, fileId string) (*types.File, error) {
+	payload := url.Values{}
+	payload.Add("file_id", fileId)
+	jsonStr, err := makeRequest("getFile", token, "", "", payload)
+	if err != nil {
+		return nil, err
+	}
+	var file types.File
+	err = json.Unmarshal(jsonStr, &file)
+	if err != nil {
+		return nil, err
+	}
+	return &file, nil
+}
+
 func sendFile(token, chat_id, methodname, typename, file string, opt Optional) (*types.Message, error) {
 	payload := url.Values{}
 	filepath := ""

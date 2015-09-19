@@ -204,3 +204,16 @@ func TestSendChatAction(t *testing.T) {
 	}
 	fmt.Println(msg)
 }
+
+func TestGetFile(t *testing.T) {
+	assert := assert.New(t)
+	token := os.Getenv("TOKEN")
+	bot := InitTeleBot(token)
+	fi := "BQADBQADnAMAAsYifgZph-iT9_z_rgI"
+	file, err := bot.GetFile(fi)
+	if err != nil {
+		assert.Fail("Bot get File error")
+	}
+	assert.Equal(file.FileId, fi)
+
+}

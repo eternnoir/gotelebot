@@ -71,6 +71,10 @@ func (bot *TeleBot) SendChatAction(chatid int, action string) (string, error) {
 	return sendChatAction(bot.token, strconv.Itoa(chatid), action)
 }
 
+func (bot *TeleBot) GetFile(fileId string) (*types.File, error) {
+	return getFile(bot.token, fileId)
+}
+
 func (bot *TeleBot) StopPolling() {
 	bot.stopPollingFlag = true
 }

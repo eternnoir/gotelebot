@@ -105,3 +105,9 @@ type Location struct {
 	Longitude float64 `json:"longitude"`
 	Latitude  float64 `json:"latitude"`
 }
+
+type File struct {
+	FileId   string  `json:"file_id"`
+	FileSize float64 `json:"file_size"`
+	FilePath string  `json:"file_path"`
+}
