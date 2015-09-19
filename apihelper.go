@@ -224,6 +224,25 @@ func getFile(token, fileId string) (*types.File, error) {
 	return &file, nil
 }
 
+func downloadFile(token, filePath string) (*[]byte, error) {
+	url := fmt.Sprintf("https://api.telegram.org/file/bot%s/%s",
+		token, filePath)
+
+	resp, err := http.Get(url)
+	defer resp.Body.Close()
+	if err != nil {
+		return nil, err
+	}
+	if resp.StatusCode != 200 {
+		return nil, errors.New(fmt.Sprintf("downloadFile error.statue code :%d", resp.StatusCode))
+	}
+	ret, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+	return &ret, nil
+}
+
 func sendFile(token, chat_id, methodname, typename, file string, opt Optional) (*types.Message, error) {
 	payload := url.Values{}
 	filepath := ""

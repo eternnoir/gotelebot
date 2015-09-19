@@ -217,3 +217,15 @@ func TestGetFile(t *testing.T) {
 	assert.Equal(file.FileId, fi)
 
 }
+
+func TestDownloadFile(t *testing.T) {
+	assert := assert.New(t)
+	token := os.Getenv("TOKEN")
+	bot := InitTeleBot(token)
+	fi := "BQADBQADnAMAAsYifgZph-iT9_z_rgI"
+	file, err := bot.DownloadFile(fi)
+	if err != nil {
+		assert.Fail("Bot get File error")
+	}
+	assert.NotZero(len(*file))
+}

@@ -75,6 +75,18 @@ func (bot *TeleBot) GetFile(fileId string) (*types.File, error) {
 	return getFile(bot.token, fileId)
 }
 
+func (bot *TeleBot) DownloadFile(fileId string) (*[]byte, error) {
+	file, err := bot.GetFile(fileId)
+	if err != nil {
+		return nil, err
+	}
+	if file.FilePath == "" {
+		return nil, errors.New("File path not found")
+	}
+	filePath := file.FilePath
+	return downloadFile(bot.token, filePath)
+}
+
 func (bot *TeleBot) StopPolling() {
 	bot.stopPollingFlag = true
 }
