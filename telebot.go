@@ -7,12 +7,6 @@ import (
 	"strconv"
 )
 
-type Bot interface {
-	GetMe() (*types.User, error)
-	GetUpdate() ([]*types.Message, error)
-	StartPolling() error
-}
-
 type TeleBot struct {
 	token           string
 	Messages        chan (*types.Message)
@@ -20,6 +14,7 @@ type TeleBot struct {
 	stopPollingFlag bool
 }
 
+// InitTeleBot is the function to create gotelebot instance.
 func InitTeleBot(botToken string) *TeleBot {
 	bot := new(TeleBot)
 	bot.token = botToken
