@@ -179,6 +179,20 @@ func TestSendVideo(t *testing.T) {
 	assert.NotEmpty(msg.Video.FileId)
 }
 
+func TestSendVoice(t *testing.T) {
+	assert := assert.New(t)
+	token := os.Getenv("TOKEN")
+	chatid, _ := strconv.Atoi(os.Getenv("CHAT"))
+	bot := InitTeleBot(token)
+	filePath := "./test_data/record.ogg"
+	msg, err := bot.SendVoice(chatid, filePath, nil)
+	if err != nil {
+		fmt.Println(err)
+		assert.Fail("Bot sendVOice error ")
+	}
+	assert.NotEmpty(msg.Voice.FileId)
+}
+
 func TestSendLocation(t *testing.T) {
 	assert := assert.New(t)
 	token := os.Getenv("TOKEN")

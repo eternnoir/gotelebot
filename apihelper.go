@@ -182,6 +182,11 @@ func sendSticker(token, chat_id, sticker string, opt *SendStickerOptional) (*typ
 func sendVideo(token, chat_id, video string, opt *SendVideoOptional) (*types.Message, error) {
 	return sendFile(token, chat_id, "sendVideo", "video", video, opt)
 }
+
+func sendVoice(token, chat_id, voice string, opt *SendVoiceOptional) (*types.Message, error) {
+	return sendFile(token, chat_id, "sendVoice", "voice", voice, opt)
+}
+
 func sendLocation(token, chat_id, latitude, longitude string, opt *SendLocationOptional) (*types.Message, error) {
 	payload := url.Values{}
 	payload.Add("chat_id", chat_id)
