@@ -12,6 +12,34 @@ While official telegram bot api update, this project will update as soon as poss
 
 Full godoc document [http://godoc.org/github.com/eternnoir/gotelebot](http://godoc.org/github.com/eternnoir/gotelebot)
 
+### Echo Bot Example
+
+```go
+package main
+
+import (
+	"fmt"
+	"github.com/eternnoir/gotelebot"
+)
+
+func main() {
+	// Echo Bot example.
+
+    // Create gotelebot instance
+	bot := gotelebot.InitTeleBot("TOKEN")
+	// Start get new message whit goroutine.
+	go bot.StartPolling(true)
+	newMsgChan := bot.Messages
+	for {
+		m := <-newMsgChan // Get new messaage, when new message arrive.
+		if m.Text != "" { // Check message is text message.
+			fmt.Println("Get message:" + m.Text)
+			bot.SendMessage(int(m.Chat.Id), m.Text, nil)
+		}
+	}
+}
+
+```
 
 ## Telegram Bot API Support
 
