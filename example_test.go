@@ -40,7 +40,6 @@ func ExampleTeleBot_SendMessage() {
 
 func ExampleTeleBot_SendPhoto() {
 	bot := gotelebot.InitTeleBot("TOKEN") // Create gotelebot instance
-	testMsg := "Test Msg"
 	chatid := 11111111
 	filePath := "./test_data/go.png"
 	_, err := bot.SendPhoto(chatid, filePath, nil)
