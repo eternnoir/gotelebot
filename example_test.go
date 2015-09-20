@@ -3,6 +3,7 @@ package gotelebot_test
 import (
 	"fmt"
 	"github.com/eternnoir/gotelebot"
+	"io/ioutil"
 )
 
 func Example() {
@@ -45,5 +46,20 @@ func ExampleTeleBot_SendPhoto() {
 	_, err := bot.SendPhoto(chatid, filePath, nil)
 	if err != nil {
 		fmt.Println("Bot send Photo error")
+	}
+}
+
+func ExampleTeleBot_DownloadFile() {
+	token := "TOKEN"
+	bot := gotelebot.InitTeleBot(token)
+	fi := "BQADBQADnAMAAsYifgZph-iT9_z_rgI"
+	file, err := bot.DownloadFile(fi)
+	if err != nil {
+		fmt.Println("Bot get File error")
+		return
+	}
+	ferr := ioutil.WriteFile("/tmp/data", *file, 0644)
+	if ferr != nil {
+		fmt.Println("Write to File error")
 	}
 }
