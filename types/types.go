@@ -52,56 +52,112 @@ type Chat struct {
 // Optional means this variable could be nil or empty.
 type Message struct {
 	// Unique message identifier
-	Message_Id  int64         `josn:"message_id"`
-	From        *User         `json:"from"`
-	Date        float64       `json:"date"`
-	Chat        *Chat         `json:"chat"`
-	ForwardFrom *User         `json:"forward_from,omitempty"`
-	ForwardDate float64       `json:"forward_date,omitempty"`
-	Text        string        `json:"text,omitempty"`
-	Audio       *Audio        `json:"audio,omitempty"`
-	Document    *Document     `json:"document,omitempty"`
-	Photo       *[]*PhotoSize `json:"photo,omitempty"`
-	Sticker     *Sticker      `json:"sticker,omitempty"`
-	Video       *Video        `json:"video,omitempty"`
-	Voice       *Voice        `json:"voice,omitempty"`
-	Caption     string        `json:"caption,omitempty"`
-	Contact     *Contact      `json:"contact,omitempty"`
-	Location    *Location     `json:"location,omitempty"`
+	Message_Id int64 `josn:"message_id"`
+	// Sender
+	From *User `json:"from"`
+	// Date the message was sent.
+	Date float64 `json:"date"`
+	// Conversation the message belongs to.
+	Chat *Chat `json:"chat"`
+	// Optional. For forwarded messages, sender of the original message
+	ForwardFrom *User `json:"forward_from,omitempty"`
+	// Optional. For forwarded messages, date the original message was sent.
+	ForwardDate float64 `json:"forward_date,omitempty"`
+	// Optional. For text messages
+	Text string `json:"text,omitempty"`
+	// Optional. Message is an audio file
+	Audio *Audio `json:"audio,omitempty"`
+	// Optional. Message is a general file
+	Document *Document `json:"document,omitempty"`
+	// Optional. Message is a photo
+	Photo *[]*PhotoSize `json:"photo,omitempty"`
+	// Optional. Message is a sticker
+	Sticker *Sticker `json:"sticker,omitempty"`
+	// Optional. Message is a video
+	Video *Video `json:"video,omitempty"`
+	// Optional. Message is a voice message
+	Voice *Voice `json:"voice,omitempty"`
+	// Optional. Caption for the photo or video
+	Caption string `json:"caption,omitempty"`
+	// Optional. Message is a shared contact
+	Contact *Contact `json:"contact,omitempty"`
+	// Optional. Message is a shared location
+	Location *Location `json:"location,omitempty"`
+	// Optional. A new member was added to the group
+	NewChatParticipant *User `json:"new_chat_participant,omitempty"`
+	// Optional. A member was removed from the group
+	LeftChatParticipant *User `json:"left_chat_participant,omitempty"`
+	//	Optional. A group title was changed to this value
+	NewChatTitle string `json:"new_chat_title,omitempty"`
+	//	Optional. A group photo was change to this value
+	NewChatPhoto *[]*PhotoSize `json:"new_chat_photo,omitempty"`
+	// Optional. Informs that the group photo was deleted
+	DeleteChatPhoto bool `json:"delete_chat_photo,omitempty"`
+	// Optional. Informs that the group has been created
+	GroupChatCreated bool `json:"group_chat_created,omitempty"`
 }
 
+// This object represents one size of a photo or a file / sticker thumbnail.
+// Optional means this variable could be nil or empty.
 type PhotoSize struct {
-	FileId   string  `json:"file_id"`
-	Width    float64 `json:"width"`
-	Height   float64 `json:"height"`
+	// Unique identifier for this file
+	FileId string `json:"file_id"`
+	// Photo width
+	Width float64 `json:"width"`
+	// Photo height
+	Height float64 `json:"height"`
+	// Optional. File size
 	FileSize float64 `json:"file_size"`
 }
 
+// This object represents an audio file to be treated as music by the Telegram clients.
+// Optional means this variable could be nil or empty.
 type Audio struct {
-	FileId    string  `json:"file_id"`
-	Duration  float64 `json:"duration"`
-	Performer string  `json:"performer"`
-	Title     string  `json:"title"`
-	MimeType  string  `json:"mime_type"`
-	FileSize  float64 `json:"file_size"`
+	// Unique identifier for this file
+	FileId string `json:"file_id"`
+	// Duration of the audio in seconds as defined by sender
+	Duration float64 `json:"duration"`
+	// Optional. Performer of the audio as defined by sender or by audio tags
+	Performer string `json:"performer"`
+	// Optional. Title of the audio as defined by sender or by audio tags
+	Title string `json:"title"`
+	// Optional. MIME type of the file as defined by sender
+	MimeType string `json:"mime_type"`
+	// Optional. File size
+	FileSize float64 `json:"file_size"`
 }
 
+// This object represents a general file (as opposed to photos, voice messages and audio files).
+// Optional means this variable could be nil or empty.
 type Document struct {
-	FileId   string    `json:"file_id"`
-	Thumb    PhotoSize `json:"thumb"`
-	FileName string    `json:"file_name"`
-	MimeType string    `json:"mime_type"`
-	FileSize float64   `josn:"file_size"`
+	// Unique file identifier
+	FileId string `json:"file_id"`
+	// Optional. Document thumbnail as defined by sender
+	Thumb PhotoSize `json:"thumb"`
+	// Optional. Original filename as defined by sender
+	FileName string `json:"file_name"`
+	// Optional. MIME type of the file as defined by sender
+	MimeType string `json:"mime_type"`
+	// Optional. File size
+	FileSize float64 `josn:"file_size"`
 }
 
+// This object represents a sticker.
+// Optional means this variable could be nil or empty.
 type Sticker struct {
-	FileId   string    `json:"file_id"`
-	width    float64   `json:"width"`
-	height   float64   `json:"height"`
-	Thumb    PhotoSize `json:"thumb"`
-	FileSize float64   `josn:"file_size"`
+	// Unique identifier for this file
+	FileId string `json:"file_id"`
+	// Sticker width
+	width float64 `json:"width"`
+	// Sticker height
+	height float64 `json:"height"`
+	// Optional. Sticker thumbnail in .webp or .jpg format
+	Thumb PhotoSize `json:"thumb"`
+	// Optional. File size
+	FileSize float64 `josn:"file_size"`
 }
 
+// This object represents a video file.
 type Video struct {
 	FileId   string    `json:"file_id"`
 	width    float64   `json:"width"`
@@ -112,6 +168,7 @@ type Video struct {
 	FileSize float64   `josn:"file_size"`
 }
 
+//This object represents a voice note.
 type Voice struct {
 	FileId   string  `json:"file_id"`
 	Duration float64 `json:"duration"`
@@ -119,6 +176,7 @@ type Voice struct {
 	FileSize float64 `json:"file_size"`
 }
 
+// This object represents a phone contact.
 type Contact struct {
 	PhoneNumber string `json:"phone_number"`
 	FirstName   string `json:"first_name"`
@@ -126,6 +184,7 @@ type Contact struct {
 	Username    string `json:"username"`
 }
 
+// This object represents a point on the map.
 type Location struct {
 	Longitude float64 `json:"longitude"`
 	Latitude  float64 `json:"latitude"`
