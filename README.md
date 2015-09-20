@@ -1,5 +1,7 @@
 # gotelebot
 
+[![GoDoc](https://godoc.org/github.com/eternnoir/gotelebot?status.svg)](https://godoc.org/github.com/eternnoir/gotelebot)
+
 Golang (Go)  implementation for the Telegram Bot API.
 
 This project provide a wrapper around the Telegram Bot API with golang. You can easy to ues telegram bot api
