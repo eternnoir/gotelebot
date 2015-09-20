@@ -10,8 +10,11 @@ type Optional interface {
 	AppendPayload(payload *url.Values)
 }
 
+// Optional parameters for SendMessage method
 type SendMessageOptional struct {
-	ParseMode             *string
+	// Send Markdown, if you want Telegram apps to show bold, italic and inline URLs in your bot's message.
+	ParseMode *string
+	// Disables link previews for links in this message
 	DisableWebPagePreview *bool
 	ReplyToMessageId      *int
 	ReplyMarkup           *types.ReplyMarkup
@@ -33,7 +36,9 @@ func (opt *SendMessageOptional) AppendPayload(payload *url.Values) {
 	}
 }
 
+// Optional parameters for SendPhoto method
 type SendPhotoOptional struct {
+	// Photo caption
 	Caption          *string
 	ReplyToMessageId *int
 	ReplyMarkup      *types.ReplyMarkup
@@ -52,7 +57,9 @@ func (opt *SendPhotoOptional) AppendPayload(payload *url.Values) {
 	}
 }
 
+// Optional parameters for SendAudio method
 type SendAudioOptional struct {
+	// Duration of the audio in seconds
 	Duration         *int
 	Performer        *string
 	Title            *string
@@ -79,6 +86,7 @@ func (opt *SendAudioOptional) AppendPayload(payload *url.Values) {
 	}
 }
 
+// Optional parameters for SendDocument method
 type SendDocumentOptional struct {
 	ReplyToMessageId *int
 	ReplyMarkup      *types.ReplyMarkup
@@ -94,6 +102,7 @@ func (opt *SendDocumentOptional) AppendPayload(payload *url.Values) {
 	}
 }
 
+// Optional parameters for SendSticker method
 type SendStickerOptional struct {
 	ReplyToMessageId *int
 	ReplyMarkup      *types.ReplyMarkup
@@ -109,6 +118,7 @@ func (opt *SendStickerOptional) AppendPayload(payload *url.Values) {
 	}
 }
 
+// Optional parameters for SendVideo method
 type SendVideoOptional struct {
 	Duration         *int
 	Caption          *string
@@ -132,6 +142,7 @@ func (opt *SendVideoOptional) AppendPayload(payload *url.Values) {
 	}
 }
 
+// Optional parameters for SendVoice method
 type SendVoiceOptional struct {
 	Duration         *int
 	ReplyToMessageId *int
@@ -151,6 +162,7 @@ func (opt *SendVoiceOptional) AppendPayload(payload *url.Values) {
 	}
 }
 
+// Optional parameters for SendLocation method
 type SendLocationOptional struct {
 	ReplyToMessageId *int
 	ReplyMarkup      *types.ReplyMarkup
