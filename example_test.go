@@ -1,6 +1,7 @@
 package gotelebot_test
 
 import (
+	"fmt"
 	"github.com/eternnoir/gotelebot"
 )
 
@@ -14,5 +15,36 @@ func Example() {
 		if m.Text != "" { // Check message is text message.
 			bot.SendMessage(int(m.Chat.Id), m.Text, nil)
 		}
+	}
+}
+
+func ExampleTeleBot_GetMe() {
+	bot := gotelebot.InitTeleBot("TOKEN") // Create gotelebot instance
+	me, err := bot.GetMe()                //Get user object.
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Println(me.FirstName)
+}
+
+func ExampleTeleBot_SendMessage() {
+	bot := gotelebot.InitTeleBot("TOKEN") // Create gotelebot instance
+	testMsg := "Test Msg"
+	chatid := 11111111
+	_, err := bot.SendMessage(chatid, testMsg, nil)
+	if err != nil {
+		fmt.Println("Bot send message error")
+	}
+}
+
+func ExampleTeleBot_SendPhoto() {
+	bot := gotelebot.InitTeleBot("TOKEN") // Create gotelebot instance
+	testMsg := "Test Msg"
+	chatid := 11111111
+	filePath := "./test_data/go.png"
+	_, err := bot.SendPhoto(chatid, filePath, nil)
+	if err != nil {
+		fmt.Println("Bot send Photo error")
 	}
 }
