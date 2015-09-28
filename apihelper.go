@@ -135,6 +135,24 @@ func getUpdates(token, offset, limit, timeout string) ([]*types.Update, error) {
 	return result, nil
 }
 
+func getUserProfilePhotos(token, userid string, opt *GetUserProfilePhotosOptional) (*types.UserProfilePhotos, error) {
+	payload := url.Values{}
+	payload.Add("user_id", userid)
+	if opt != nil {
+		opt.AppendPayload(&payload)
+	}
+	jsonStr, err := makeRequest("getUserProfilePhotos", token, "", "", payload)
+	if err != nil {
+		return nil, err
+	}
+	var ups types.UserProfilePhotos
+	err = json.Unmarshal(jsonStr, &ups)
+	if err != nil {
+		return nil, err
+	}
+	return &ups, nil
+}
+
 func sendMessage(token, chat_id, text string, opt *SendMessageOptional) (*types.Message, error) {
 	payload := url.Values{}
 	payload.Add("chat_id", chat_id)

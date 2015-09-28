@@ -177,3 +177,17 @@ func (opt *SendLocationOptional) AppendPayload(payload *url.Values) {
 		payload.Add("reply_markup", jsonStr)
 	}
 }
+
+type GetUserProfilePhotosOptional struct {
+	Offset *int
+	Limit  *int
+}
+
+func (opt *GetUserProfilePhotosOptional) AppendPayload(payload *url.Values) {
+	if opt.Offset != nil {
+		payload.Add("offset", strconv.Itoa(*opt.Offset))
+	}
+	if opt.Limit != nil {
+		payload.Add("limit", strconv.Itoa(*opt.Limit))
+	}
+}

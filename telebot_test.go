@@ -219,6 +219,20 @@ func TestSendChatAction(t *testing.T) {
 	fmt.Println(msg)
 }
 
+func TestGetUserProfilePhotos(t *testing.T) {
+	assert := assert.New(t)
+	token := os.Getenv("TOKEN")
+	chatid, _ := strconv.Atoi(os.Getenv("CHAT"))
+	bot := InitTeleBot(token)
+	photos, err := bot.GetUserProfilePhotos(chatid, nil)
+	if err != nil {
+		fmt.Println(err)
+		assert.Fail("Bot get User Profile phtots fail.")
+	}
+	assert.True(len(*photos.Photos) > 0)
+	assert.True(photos.TotalCount > 0)
+}
+
 func TestGetFile(t *testing.T) {
 	assert := assert.New(t)
 	token := os.Getenv("TOKEN")

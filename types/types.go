@@ -242,3 +242,8 @@ type File struct {
 	FileSize float64 `json:"file_size"`
 	FilePath string  `json:"file_path"`
 }
+
+type UserProfilePhotos struct {
+	TotalCount float64          `json:"total_count"`
+	Photos     *[]*[]*PhotoSize `json:"photos"`
+}

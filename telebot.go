@@ -111,6 +111,11 @@ func (bot *TeleBot) SendChatAction(chatid int, action string) (string, error) {
 	return sendChatAction(bot.token, strconv.Itoa(chatid), action)
 }
 
+// Use this method to get a list of profile pictures for a user.
+func (bot *TeleBot) GetUserProfilePhotos(userid int, opt *GetUserProfilePhotosOptional) (*types.UserProfilePhotos, error) {
+	return getUserProfilePhotos(bot.token, strconv.Itoa(userid), opt)
+}
+
 // Use this method to get basic info about a file and prepare it for downloading.
 func (bot *TeleBot) GetFile(fileId string) (*types.File, error) {
 	return getFile(bot.token, fileId)
