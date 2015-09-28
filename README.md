@@ -60,7 +60,7 @@ func main() {
 | sendVoice               | SendVoice            | Supported   |
 | sendLocation            | SendLocation         | Supported   |
 | sendChatAction          | SendChatAction       | Supported   |
-| getUserProfilePhotos    | GetUserProfilePhotos | Coming soon |
+| getUserProfilePhotos    | GetUserProfilePhotos | Supported   |
 | getUpdates              | GetUpdates           | Supported   |
 | setWebhook              | SetWebhook           | Coming soon |
 | getFile                 | GetFile              | Supported   |
