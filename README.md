@@ -10,6 +10,12 @@ in golang way by use this project. And gotelebot provided polling method let dev
 Almost all method in Telegram bot api have been implement. 
 While official telegram bot api update, this project will update as soon as possible.
 
+## Installation
+
+```
+go get github.com/eternnoir/gotelebot
+```
+
 ## Document
 
 Full godoc document [http://godoc.org/github.com/eternnoir/gotelebot](http://godoc.org/github.com/eternnoir/gotelebot)
