@@ -42,6 +42,7 @@ type GroupChat struct {
 // Optional means this variable could be nil or empty.
 type Chat struct {
 	Id        float64 `json:"id"`
+	Type      string  `json:"type"`
 	FirstName string  `json:"first_name"`
 	LastName  string  `json:"last_name"`
 	Username  string  `json:"username"`

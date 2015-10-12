@@ -257,3 +257,16 @@ func TestDownloadFile(t *testing.T) {
 	}
 	assert.NotZero(len(*file))
 }
+
+func TestChatType(t *testing.T) {
+	assert := assert.New(t)
+	token := os.Getenv("TOKEN")
+	chatid, _ := strconv.Atoi(os.Getenv("CHAT"))
+	bot := InitTeleBot(token)
+	msg, err := bot.SendMessage(chatid, "Test", nil)
+	if err != nil {
+		assert.Fail("Bot send message error")
+	}
+	assert.EqualValues(int(msg.Chat.Id), chatid)
+	assert.EqualValues(msg.Chat.Type, "private")
+}
