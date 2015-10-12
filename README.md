@@ -65,3 +65,9 @@ func main() {
 | setWebhook              | SetWebhook           | Coming soon |
 | getFile                 | GetFile              | Supported   |
 
+
+
+# Change Log
+
+## 2015-10-12
+* New type ```Chat``` support. More information : https://core.telegram.org/bots/api#recent-changes
