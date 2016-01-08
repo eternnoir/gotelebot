@@ -13,7 +13,11 @@ type Update struct {
 	// The update‘s unique identifier.
 	UpdateId float64 `json:"update_id"`
 	// Optional. New incoming message of any kind
-	Message *Message `json:"message"`
+	Message *Message `json:"message,omitempty"`
+	// Optional. New incoming inline query
+	InlineQuery *InlineQuery `json:"inline_query,omitempty"`
+	// Optional. The result of a inline query that was chosen by a user and sent to their chat partner
+	ChosenInlineResult *ChosenInlineResult `json:"chosen_inline_result,omitempty"`
 }
 
 // User object.
