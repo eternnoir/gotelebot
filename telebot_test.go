@@ -32,6 +32,16 @@ func TestSendMessage(t *testing.T) {
 	assert.EqualValues(testMsg, msg.Text)
 }
 
+func SendMsgAndGetId() int {
+	token := os.Getenv("TOKEN")
+	chatid, _ := strconv.Atoi(os.Getenv("CHAT"))
+	bot := InitTeleBot(token)
+	testMsg := "Test Msg"
+	msg, _ := bot.SendMessage(chatid, testMsg, nil)
+	return int(msg.Message_Id)
+
+}
+
 func TestSendMessageWithOpt(t *testing.T) {
 	assert := assert.New(t)
 	token := os.Getenv("TOKEN")
@@ -39,8 +49,8 @@ func TestSendMessageWithOpt(t *testing.T) {
 	bot := InitTeleBot(token)
 	testMsg := "Test Msg"
 	dis := true
-	replayId := 267
-	opt := &SendMessageOptional{DisableWebPagePreview: &dis, ReplyToMessageId: &replayId}
+	rid := SendMsgAndGetId()
+	opt := &SendMessageOptional{DisableWebPagePreview: &dis, ReplyToMessageId: &rid}
 	msg, err := bot.SendMessage(chatid, testMsg, opt)
 	if err != nil {
 		assert.Fail("Bot send message error")
@@ -53,7 +63,7 @@ func TestForwardMessage(t *testing.T) {
 	token := os.Getenv("TOKEN")
 	chatid, _ := strconv.Atoi(os.Getenv("CHAT"))
 	bot := InitTeleBot(token)
-	msg, err := bot.ForwardMessage(chatid, chatid, 267)
+	msg, err := bot.ForwardMessage(chatid, chatid, SendMsgAndGetId())
 	if err != nil {
 		assert.Fail("Bot forwardMessage error")
 	}
@@ -75,27 +85,13 @@ func TestSendPhoto(t *testing.T) {
 	assert.NotEmpty(msg.Photo)
 }
 
-func TestSendPhotoWithFileId(t *testing.T) {
-	assert := assert.New(t)
-	token := os.Getenv("TOKEN")
-	chatid, _ := strconv.Atoi(os.Getenv("CHAT"))
-	bot := InitTeleBot(token)
-	fileId := "AgADBQADs6gxG8YifgZH1dV8JXYjR1-qszIABHpP-G3navK5NYEAAgI"
-	msg, err := bot.SendPhoto(chatid, fileId, nil)
-	if err != nil {
-		fmt.Println(err)
-		assert.Fail("Bot sendPhoto error ")
-	}
-	assert.NotEmpty(msg.Photo)
-}
-
 func TestSendPhotoWithOpt(t *testing.T) {
 	assert := assert.New(t)
 	token := os.Getenv("TOKEN")
 	chatid, _ := strconv.Atoi(os.Getenv("CHAT"))
 	bot := InitTeleBot(token)
 	filePath := "./test_data/go.png"
-	rsi := 267
+	rsi := SendMsgAndGetId()
 	opt := &SendPhotoOptional{ReplyToMessageId: &rsi}
 	msg, err := bot.SendPhoto(chatid, filePath, opt)
 	if err != nil {
@@ -126,7 +122,7 @@ func TestSendAudioWithOpt(t *testing.T) {
 	bot := InitTeleBot(token)
 	performer := "tele"
 	title := "gram"
-	rsi := 267
+	rsi := SendMsgAndGetId()
 	opt := &SendAudioOptional{Performer: &performer, Title: &title, ReplyToMessageId: &rsi}
 	filePath := "./test_data/record.mp3"
 	msg, err := bot.SendAudio(chatid, filePath, opt)
@@ -231,31 +227,6 @@ func TestGetUserProfilePhotos(t *testing.T) {
 	}
 	assert.True(len(*photos.Photos) > 0)
 	assert.True(photos.TotalCount > 0)
-}
-
-func TestGetFile(t *testing.T) {
-	assert := assert.New(t)
-	token := os.Getenv("TOKEN")
-	bot := InitTeleBot(token)
-	fi := "BQADBQADnAMAAsYifgZph-iT9_z_rgI"
-	file, err := bot.GetFile(fi)
-	if err != nil {
-		assert.Fail("Bot get File error")
-	}
-	assert.Equal(file.FileId, fi)
-
-}
-
-func TestDownloadFile(t *testing.T) {
-	assert := assert.New(t)
-	token := os.Getenv("TOKEN")
-	bot := InitTeleBot(token)
-	fi := "BQADBQADnAMAAsYifgZph-iT9_z_rgI"
-	file, err := bot.DownloadFile(fi)
-	if err != nil {
-		assert.Fail("Bot get File error")
-	}
-	assert.NotZero(len(*file))
 }
 
 func TestChatType(t *testing.T) {
