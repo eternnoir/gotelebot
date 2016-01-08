@@ -198,8 +198,8 @@ type ReplyMarkup interface {
 type ReplyKeyboardMarkup struct {
 	Keyboard        [][]string `json:"keyboard"`
 	ResizeKeyboard  bool       `json:"resize_keyboard,omitempty"`
-	OneTimeKeyboard bool       `json:one_time_keyboard,omitempty"`
-	Selective       bool       `json:selective,omitempty"`
+	OneTimeKeyboard bool       `json:"one_time_keyboard,omitempty"`
+	Selective       bool       `json:"selective,omitempty"`
 }
 
 func (rkm *ReplyKeyboardMarkup) ToJson() (string, error) {
