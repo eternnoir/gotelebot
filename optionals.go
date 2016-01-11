@@ -191,3 +191,25 @@ func (opt *GetUserProfilePhotosOptional) AppendPayload(payload *url.Values) {
 		payload.Add("limit", strconv.Itoa(*opt.Limit))
 	}
 }
+
+type AnswerInlineQueryOptional struct {
+	CacheTime  *int
+	IsPersonal *bool
+	NextOffset *string
+}
+
+func (opt *AnswerInlineQueryOptional) AppendPayload(payload *url.Values) {
+	if opt.CacheTime != nil {
+		payload.Add("cache_time", strconv.Itoa(*opt.CacheTime))
+	}
+	if opt.IsPersonal != nil {
+		if *opt.IsPersonal {
+			payload.Add("is_personal", "True")
+		} else {
+			payload.Add("is_personal", "False")
+		}
+	}
+	if opt.NextOffset != nil {
+		payload.Add("next_offset", *opt.NextOffset)
+	}
+}

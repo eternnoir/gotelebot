@@ -9,18 +9,21 @@ import (
 )
 
 type TeleBot struct {
-	token           string
-	Messages        chan (*types.Message)
-	Offset          float64
-	stopPollingFlag bool
+	token               string
+	Messages            chan (*types.Message)
+	InlineQuerys        chan (*types.InlineQuery)
+	ChosenInlineResults chan (*types.ChosenInlineResult)
+	Offset              float64
+	stopPollingFlag     bool
 }
 
 // InitTeleBot is the function to create gotelebot instance.
 func InitTeleBot(botToken string) *TeleBot {
 	bot := new(TeleBot)
 	bot.token = botToken
-	ch := make(chan *types.Message)
-	bot.Messages = ch
+	bot.Messages = make(chan *types.Message)
+	bot.InlineQuerys = make(chan *types.InlineQuery)
+	bot.ChosenInlineResults = make(chan *types.ChosenInlineResult)
 	return bot
 }
 
@@ -98,6 +101,10 @@ func (bot *TeleBot) SendLocation(chatid int, latitude, longitude float64, opt *S
 	return sendLocation(bot.token, strconv.Itoa(chatid), strconv.FormatFloat(latitude, 'f', 6, 64), strconv.FormatFloat(longitude, 'f', 6, 64), opt)
 }
 
+func (bot *TeleBot) AnswerInlineQuery(inlineQueryId string, results []interface{}, opt *AnswerInlineQueryOptional) (bool, error) {
+	return answerInlineQuery(bot.token, inlineQueryId, results, opt)
+}
+
 // Use this method when you need to tell the user that something is happening on the bot's side.
 //
 // action can be :
@@ -154,30 +161,23 @@ func (bot *TeleBot) StartPolling(nonStop bool) error {
 				fmt.Println(err)
 			}
 		}
-		newMessages, errs := bot.processNewUpdate(newUpdates)
-		if errs != nil {
-			if !nonStop {
-				return errs
-			} else {
-				fmt.Println(errs)
-			}
-		}
-		for _, m := range newMessages {
-			bot.Messages <- m
-		}
+		go bot.processNewUpdate(newUpdates)
+
 	}
 }
 
-func (bot *TeleBot) processNewUpdate(updates []*types.Update) ([]*types.Message, error) {
-	retMessages := []*types.Message{}
+func (bot *TeleBot) processNewUpdate(updates []*types.Update) {
 	for _, update := range updates {
 		if update.UpdateId >= bot.Offset {
 			bot.Offset = update.UpdateId + 1
 		}
-		if update.Message == nil {
-			return nil, errors.New("[telebot][ERROR] Message is null.")
+		switch {
+		case update.Message != nil:
+			bot.Messages <- update.Message
+		case update.InlineQuery != nil:
+			bot.InlineQuerys <- update.InlineQuery
+		case update.ChosenInlineResult != nil:
+			bot.ChosenInlineResults <- update.ChosenInlineResult
 		}
-		retMessages = append(retMessages, update.Message)
 	}
-	return retMessages, nil
 }

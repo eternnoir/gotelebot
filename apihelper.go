@@ -288,6 +288,44 @@ func sendFile(token, chat_id, methodname, typename, file string, opt Optional) (
 	return transformToMessage(jsonStr)
 }
 
+func answerInlineQuery(token, inlineQueryId string, results []interface{}, opt *AnswerInlineQueryOptional) (bool, error) {
+	payload := url.Values{}
+	payload.Add("inline_query_id", inlineQueryId)
+	resultJosn, err := getInlineQueryResultJsonString(results)
+	if err != nil {
+		return false, err
+	}
+	payload.Add("results", resultJosn)
+	if !reflect.ValueOf(opt).IsNil() { // Check interface conatain nil
+		opt.AppendPayload(&payload)
+	}
+	jsonStr, err := makeRequest("answerInlineQuery", token, "", "", payload)
+	if err != nil {
+		return false, err
+	}
+	var ret bool
+	err = json.Unmarshal(jsonStr, &ret)
+	if err != nil {
+		return false, err
+	}
+	return ret, nil
+}
+
+func getInlineQueryResultJsonString(results []interface{}) (string, error) {
+	ret := ""
+	for _, r := range results {
+		jsonStr, err := json.Marshal(r)
+		if err != nil {
+			return "", errors.New(fmt.Sprint("InlineQueryResult json encode error. %s. %#v", err, r))
+		}
+		ret = ret + string(jsonStr) + ","
+	}
+	if len(ret) > 0 {
+		ret = string(ret[0 : len(ret)-1])
+	}
+	return "[" + ret + "]", nil
+}
+
 func transformToMessage(jsonStr []byte) (*types.Message, error) {
 	var msg types.Message
 	err := json.Unmarshal(jsonStr, &msg)
