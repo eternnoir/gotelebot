@@ -37,15 +37,43 @@ func main() {
 	bot := gotelebot.InitTeleBot("TOKEN")
 	// Start get new message whit goroutine.
 	go bot.StartPolling(true)
+	go processNewMessage(bot)
+	go processNewInlineQuery(bot)
+	for {
+		// Avoid process exit.
+		time.Sleep(10 * time.Second)
+	}
+}
+
+func processNewMessage(bot *gotelebot.TeleBot) {
 	newMsgChan := bot.Messages
 	for {
 		m := <-newMsgChan // Get new messaage, when new message arrive.
+		fmt.Printf("Get Message:%#v \n", m)
 		if m.Text != "" { // Check message is text message.
-			fmt.Println("Get message:" + m.Text)
 			bot.SendMessage(int(m.Chat.Id), m.Text, nil)
 		}
 	}
 }
+
+func processNewInlineQuery(bot *gotelebot.TeleBot) {
+	newQuery := bot.InlineQuerys
+	for {
+		q := <-newQuery
+		fmt.Printf("Get NewInlineQuery:%#v \n", q)
+		if q.Query != "" {	// Only return result when query string not empty.
+			result1 := types.NewInlineQueryResultArticl()
+			result1.Id = "1"
+			result1.Title = "Example"
+			result1.MessageText = "Hi" + q.Query
+			_, err := bot.AnswerInlineQuery(q.Id, []interface{}{result1}, nil)
+			if err != nil {
+				fmt.Println(err)
+			}
+		}
+	}
+}
+
 
 ```
 
@@ -68,8 +96,8 @@ func main() {
 | sendChatAction          | SendChatAction       | Supported   |
 | getUserProfilePhotos    | GetUserProfilePhotos | Supported   |
 | getUpdates              | GetUpdates           | Supported   |
-| setWebhook              | SetWebhook           | Coming soon |
 | getFile                 | GetFile              | Supported   |
+| inline mode             | inline mode          | Supported   |
 
 
 
