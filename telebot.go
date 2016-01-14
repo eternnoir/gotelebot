@@ -50,7 +50,7 @@ func (bot *TeleBot) ForwardMessage(chatid, from_chat_id, message_id int) (*types
 	return forwardMessage(bot.token, strconv.Itoa(chatid), strconv.Itoa(from_chat_id), strconv.Itoa(message_id))
 }
 
-//Use this method to send photos. On success, the sent Message is returned.
+// Use this method to send photos. On success, the sent Message is returned.
 //
 // Use SendPhotoOptional to setup optional parameters. If you don't want use any optional parameters, just asign nil to opt.
 func (bot *TeleBot) SendPhoto(chatid int, photo string, opt *SendPhotoOptional) (*types.Message, error) {
