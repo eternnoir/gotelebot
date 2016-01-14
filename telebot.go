@@ -162,7 +162,7 @@ func (bot *TeleBot) StartPolling(nonStop bool, timeout int) error {
 				fmt.Println(err)
 			}
 		}
-		go bot.processNewUpdate(newUpdates)
+		bot.processNewUpdate(newUpdates)
 	}
 }
 
