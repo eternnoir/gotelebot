@@ -10,7 +10,7 @@ import (
 func Example() {
 	// Echo Bot example.
 	bot := gotelebot.InitTeleBot("TOKEN") // Create gotelebot instance
-	go bot.StartPolling(true, 0)          // Start get new message whit goroutine.
+	go bot.StartPolling(true, 0)          // Start get new message whit goroutine and default timeout.
 	newMsgChan := bot.Messages
 	for {
 		m := <-newMsgChan // Get new messaage, when new message arrive.
