@@ -2,14 +2,15 @@ package gotelebot_test
 
 import (
 	"fmt"
-	"github.com/eternnoir/gotelebot"
 	"io/ioutil"
+
+	"github.com/eternnoir/gotelebot"
 )
 
 func Example() {
 	// Echo Bot example.
 	bot := gotelebot.InitTeleBot("TOKEN") // Create gotelebot instance
-	go bot.StartPolling(true)             // Start get new message whit goroutine.
+	go bot.StartPolling(true, 0)          // Start get new message whit goroutine.
 	newMsgChan := bot.Messages
 	for {
 		m := <-newMsgChan // Get new messaage, when new message arrive.
@@ -21,7 +22,7 @@ func Example() {
 
 func ExampleTeleBot_GetMe() {
 	bot := gotelebot.InitTeleBot("TOKEN") // Create gotelebot instance
-	me, err := bot.GetMe()                //Get user object.
+	me, err := bot.GetMe()                // Get user object.
 	if err != nil {
 		fmt.Println(err)
 		return

@@ -33,16 +33,12 @@ import (
 func main() {
 	// Echo Bot example.
 
-    // Create gotelebot instance
+	// Create gotelebot instance
 	bot := gotelebot.InitTeleBot("TOKEN")
-	// Start get new message whit goroutine.
-	go bot.StartPolling(true)
+	// Start get new message whit goroutine and 60s timeout.
+	go bot.StartPolling(true, 60)
 	go processNewMessage(bot)
-	go processNewInlineQuery(bot)
-	for {
-		// Avoid process exit.
-		time.Sleep(10 * time.Second)
-	}
+	processNewInlineQuery(bot)
 }
 
 func processNewMessage(bot *gotelebot.TeleBot) {

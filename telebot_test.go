@@ -2,10 +2,11 @@ package gotelebot
 
 import (
 	"fmt"
-	"github.com/stretchr/testify/assert"
 	"os"
 	"strconv"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestGetMe(t *testing.T) {
@@ -39,7 +40,6 @@ func SendMsgAndGetId() int {
 	testMsg := "Test Msg"
 	msg, _ := bot.SendMessage(chatid, testMsg, nil)
 	return int(msg.Message_Id)
-
 }
 
 func TestSendMessageWithOpt(t *testing.T) {

@@ -4,8 +4,9 @@ package gotelebot
 import (
 	"errors"
 	"fmt"
-	"github.com/eternnoir/gotelebot/types"
 	"strconv"
+
+	"github.com/eternnoir/gotelebot/types"
 )
 
 type TeleBot struct {
@@ -33,8 +34,8 @@ func (bot *TeleBot) GetMe() (*types.User, error) {
 }
 
 // Use this method to receive incoming updates using long polling. An Array of Update objects is returned.
-func (bot *TeleBot) GetUpdates(offset, limit, timeout string) ([]*types.Update, error) {
-	return getUpdates(bot.token, offset, limit, timeout)
+func (bot *TeleBot) GetUpdates(offset, limit string, timeout int) ([]*types.Update, error) {
+	return getUpdates(bot.token, offset, limit, strconv.Itoa(timeout))
 }
 
 // Use this method to send text messages. On success, the sent Message type is returned.
@@ -147,13 +148,13 @@ func (bot *TeleBot) StopPolling() {
 }
 
 // Let gotelebot always try to get new messages. This function will put new message to gotelebot's Message channel.
-func (bot *TeleBot) StartPolling(nonStop bool) error {
+func (bot *TeleBot) StartPolling(nonStop bool, timeout int) error {
 	bot.stopPollingFlag = false
 	for {
 		if bot.stopPollingFlag == true {
 			return nil
 		}
-		newUpdates, err := bot.GetUpdates(strconv.Itoa(int(bot.Offset)), "", "")
+		newUpdates, err := bot.GetUpdates(strconv.Itoa(int(bot.Offset)), "", timeout)
 		if err != nil {
 			if !nonStop {
 				return err
@@ -161,8 +162,8 @@ func (bot *TeleBot) StartPolling(nonStop bool) error {
 				fmt.Println(err)
 			}
 		}
+		fmt.Println(newUpdates)
 		go bot.processNewUpdate(newUpdates)
-
 	}
 }
 
