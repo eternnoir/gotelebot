@@ -80,7 +80,7 @@ func TestSendPhoto(t *testing.T) {
 	msg, err := bot.SendPhoto(chatid, filePath, nil)
 	if err != nil {
 		fmt.Println(err)
-		assert.Fail("Bot sendPhoto error ")
+		assert.Fail("Bot sendPhoto error")
 	}
 	assert.NotEmpty(msg.Photo)
 }
@@ -96,7 +96,7 @@ func TestSendPhotoWithOpt(t *testing.T) {
 	msg, err := bot.SendPhoto(chatid, filePath, opt)
 	if err != nil {
 		fmt.Println(err)
-		assert.Fail("Bot sendPhoto error ")
+		assert.Fail("Bot sendPhoto error")
 	}
 	assert.NotEmpty(msg.Photo)
 }
@@ -110,7 +110,7 @@ func TestSendAudio(t *testing.T) {
 	msg, err := bot.SendAudio(chatid, filePath, nil)
 	if err != nil {
 		fmt.Println(err)
-		assert.Fail("Bot sendAudio error ")
+		assert.Fail("Bot sendAudio error")
 	}
 	assert.NotEmpty(msg)
 }
@@ -128,7 +128,7 @@ func TestSendAudioWithOpt(t *testing.T) {
 	msg, err := bot.SendAudio(chatid, filePath, opt)
 	if err != nil {
 		fmt.Println(err)
-		assert.Fail("Bot sendAudio error ")
+		assert.Fail("Bot sendAudio error")
 	}
 	assert.Equal(msg.Audio.Title, title)
 }
@@ -142,7 +142,7 @@ func TestSendDocument(t *testing.T) {
 	msg, err := bot.SendDocument(chatid, filePath, nil)
 	if err != nil {
 		fmt.Println(err)
-		assert.Fail("Bot sendDocument error ")
+		assert.Fail("Bot sendDocument error")
 	}
 	assert.NotEmpty(msg.Document.FileId)
 }
@@ -156,7 +156,7 @@ func TestSendSticker(t *testing.T) {
 	msg, err := bot.SendSticker(chatid, filePath, nil)
 	if err != nil {
 		fmt.Println(err)
-		assert.Fail("Bot sendStick error ")
+		assert.Fail("Bot sendStick error")
 	}
 	assert.NotEmpty(msg.Sticker.FileId)
 }
@@ -170,7 +170,7 @@ func TestSendVideo(t *testing.T) {
 	msg, err := bot.SendVideo(chatid, filePath, nil)
 	if err != nil {
 		fmt.Println(err)
-		assert.Fail("Bot sendVideo error ")
+		assert.Fail("Bot sendVideo error")
 	}
 	assert.NotEmpty(msg.Video.FileId)
 }
@@ -184,7 +184,7 @@ func TestSendVoice(t *testing.T) {
 	msg, err := bot.SendVoice(chatid, filePath, nil)
 	if err != nil {
 		fmt.Println(err)
-		assert.Fail("Bot sendVOice error ")
+		assert.Fail("Bot sendVOice error")
 	}
 	assert.NotEmpty(msg.Voice.FileId)
 }
