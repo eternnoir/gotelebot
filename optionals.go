@@ -1,9 +1,10 @@
 package gotelebot
 
 import (
-	"github.com/eternnoir/gotelebot/types"
 	"net/url"
 	"strconv"
+
+	"github.com/eternnoir/gotelebot/types"
 )
 
 type Optional interface {

@@ -4,8 +4,9 @@ package gotelebot
 import (
 	"errors"
 	"fmt"
-	"github.com/eternnoir/gotelebot/types"
 	"strconv"
+
+	"github.com/eternnoir/gotelebot/types"
 )
 
 type TeleBot struct {
@@ -33,8 +34,8 @@ func (bot *TeleBot) GetMe() (*types.User, error) {
 }
 
 // Use this method to receive incoming updates using long polling. An Array of Update objects is returned.
-func (bot *TeleBot) GetUpdates(offset, limit, timeout string) ([]*types.Update, error) {
-	return getUpdates(bot.token, offset, limit, timeout)
+func (bot *TeleBot) GetUpdates(offset, limit string, timeout int) ([]*types.Update, error) {
+	return getUpdates(bot.token, offset, limit, strconv.Itoa(timeout))
 }
 
 // Use this method to send text messages. On success, the sent Message type is returned.
@@ -49,7 +50,7 @@ func (bot *TeleBot) ForwardMessage(chatid, from_chat_id, message_id int) (*types
 	return forwardMessage(bot.token, strconv.Itoa(chatid), strconv.Itoa(from_chat_id), strconv.Itoa(message_id))
 }
 
-//Use this method to send photos. On success, the sent Message is returned.
+// Use this method to send photos. On success, the sent Message is returned.
 //
 // Use SendPhotoOptional to setup optional parameters. If you don't want use any optional parameters, just asign nil to opt.
 func (bot *TeleBot) SendPhoto(chatid int, photo string, opt *SendPhotoOptional) (*types.Message, error) {
@@ -147,13 +148,13 @@ func (bot *TeleBot) StopPolling() {
 }
 
 // Let gotelebot always try to get new messages. This function will put new message to gotelebot's Message channel.
-func (bot *TeleBot) StartPolling(nonStop bool) error {
+func (bot *TeleBot) StartPolling(nonStop bool, timeout int) error {
 	bot.stopPollingFlag = false
 	for {
 		if bot.stopPollingFlag == true {
 			return nil
 		}
-		newUpdates, err := bot.GetUpdates(strconv.Itoa(int(bot.Offset)), "", "")
+		newUpdates, err := bot.GetUpdates(strconv.Itoa(int(bot.Offset)), "", timeout)
 		if err != nil {
 			if !nonStop {
 				return err
@@ -161,8 +162,7 @@ func (bot *TeleBot) StartPolling(nonStop bool) error {
 				fmt.Println(err)
 			}
 		}
-		go bot.processNewUpdate(newUpdates)
-
+		bot.processNewUpdate(newUpdates)
 	}
 }
 

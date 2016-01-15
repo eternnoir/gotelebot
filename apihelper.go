@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/eternnoir/gotelebot/types"
 	"io"
 	"io/ioutil"
 	"mime/multipart"
@@ -14,6 +13,8 @@ import (
 	"os"
 	"path/filepath"
 	"reflect"
+
+	"github.com/eternnoir/gotelebot/types"
 )
 
 func sendGetRequest(method string, token string, params url.Values) ([]byte, error) {
