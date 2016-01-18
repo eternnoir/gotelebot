@@ -57,7 +57,7 @@ type Chat struct {
 // Optional means this variable could be nil or empty.
 type Message struct {
 	// Unique message identifier
-	Message_Id int64 `josn:"message_id"`
+	Message_Id float64 `josn:"message_id"`
 	// Sender
 	From *User `json:"from"`
 	// Date the message was sent.
