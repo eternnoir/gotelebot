@@ -21,15 +21,28 @@ type ChosenInlineResult struct {
 }
 
 type InlineQueryResult struct {
-	Type                  string `json:"type"`
-	Id                    string `json:"id"`
-	ParseMode             string `json:"parse_mode,omitempty"`
-	DisableWebPagePreview bool   `json:"description,omitempty"`
+	Type                  string  `json:"type"`
+	Id                    string  `json:"id"`
+	ParseMode             *string `json:"parse_mode,omitempty"`
+	DisableWebPagePreview *bool   `json:"description,omitempty"`
+}
+
+type InlineQueryResultCachedMpeg4Gif struct {
+	InlineQueryResult
+	Mpeg4FileId string  `json:"mpeg4_file_id"`
+	Title       *string `json:"title,omitempty"`
+	Caption     *string `josn:"caption,omitempty"`
+}
+
+func NewInlineQueryResultCachedMpeg4Gif() *InlineQueryResultCachedMpeg4Gif {
+	ret := new(InlineQueryResultCachedMpeg4Gif)
+	ret.Type = "mpeg4_gif"
+	return ret
 }
 
 type InlineQueryResultArticle struct {
 	InlineQueryResult
-	Title       string  `json:"title"`
+	Title       string  `json:"titl`
 	MessageText string  `json:"message_text"`
 	Url         string  `json:"url,omitempty"`
 	HideUrl     bool    `json:"hide_url,omitempty"`
@@ -82,13 +95,13 @@ func NewInlineQueryResultGif() *InlineQueryResultGif {
 
 type InlineQueryResultMpeg4Gif struct {
 	InlineQueryResult
-	Mpeg4Url    string  `json:"mpeg4_url"`
-	Mpeg4Width  float64 `json:"mpeg4_width,omitempty"`
-	Mpeg4Height float64 `json:"mpeg4_height,omitempty"`
-	ThumbUrl    string  `json:"thumb_url"`
-	Title       string  `json:"title,omitempty"`
-	Caption     string  `json:"caption,omitempty"`
-	MessageText string  `json:"message_text,omitempty"`
+	Mpeg4Url    string   `json:"mpeg4_url"`
+	Mpeg4Width  *float64 `json:"mpeg4_width,omitempty"`
+	Mpeg4Height *float64 `json:"mpeg4_height,omitempty"`
+	ThumbUrl    string   `json:"thumb_url"`
+	Title       *string  `json:"title,omitempty"`
+	Caption     *string  `json:"caption,omitempty"`
+	MessageText *string  `json:"message_text,omitempty"`
 }
 
 func NewInlineQueryResultMpeg4Gif() *InlineQueryResultMpeg4Gif {

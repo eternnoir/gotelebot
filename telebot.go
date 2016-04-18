@@ -171,6 +171,7 @@ func (bot *TeleBot) processNewUpdate(updates []*types.Update) {
 		if update.UpdateId >= bot.Offset {
 			bot.Offset = update.UpdateId + 1
 		}
+		fmt.Printf("%#v", update)
 		switch {
 		case update.Message != nil:
 			bot.Messages <- update.Message
