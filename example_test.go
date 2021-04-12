@@ -24,7 +24,7 @@ func ExampleTeleBot_GetMe() {
 	bot := gotelebot.InitTeleBot("TOKEN") // Create gotelebot instance
 	me, err := bot.GetMe()                // Get user object.
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println(err.Error())
 		return
 	}
 	fmt.Println(me.FirstName)

@@ -159,7 +159,7 @@ func (bot *TeleBot) StartPolling(nonStop bool, timeout int) error {
 			if !nonStop {
 				return err
 			} else {
-				fmt.Println(err)
+				fmt.Println(err.Error())
 			}
 		}
 		bot.processNewUpdate(newUpdates)
