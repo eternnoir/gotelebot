@@ -79,7 +79,7 @@ func TestSendPhoto(t *testing.T) {
 	filePath := "./test_data/go.png"
 	msg, err := bot.SendPhoto(chatid, filePath, nil)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println(err.Error())
 		assert.Fail("Bot sendPhoto error")
 	}
 	assert.NotEmpty(msg.Photo)
@@ -95,7 +95,7 @@ func TestSendPhotoWithOpt(t *testing.T) {
 	opt := &SendPhotoOptional{ReplyToMessageId: &rsi}
 	msg, err := bot.SendPhoto(chatid, filePath, opt)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println(err.Error())
 		assert.Fail("Bot sendPhoto error")
 	}
 	assert.NotEmpty(msg.Photo)
@@ -109,7 +109,7 @@ func TestSendAudio(t *testing.T) {
 	filePath := "./test_data/record.mp3"
 	msg, err := bot.SendAudio(chatid, filePath, nil)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println(err.Error())
 		assert.Fail("Bot sendAudio error")
 	}
 	assert.NotEmpty(msg)
@@ -127,7 +127,7 @@ func TestSendAudioWithOpt(t *testing.T) {
 	filePath := "./test_data/record.mp3"
 	msg, err := bot.SendAudio(chatid, filePath, opt)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println(err.Error())
 		assert.Fail("Bot sendAudio error")
 	}
 	assert.Equal(msg.Audio.Title, title)
@@ -141,7 +141,7 @@ func TestSendDocument(t *testing.T) {
 	filePath := "./test_data/go.png"
 	msg, err := bot.SendDocument(chatid, filePath, nil)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println(err.Error())
 		assert.Fail("Bot sendDocument error")
 	}
 	assert.NotEmpty(msg.Document.FileId)
@@ -155,7 +155,7 @@ func TestSendSticker(t *testing.T) {
 	filePath := "./test_data/go.webp"
 	msg, err := bot.SendSticker(chatid, filePath, nil)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println(err.Error())
 		assert.Fail("Bot sendStick error")
 	}
 	assert.NotEmpty(msg.Sticker.FileId)
@@ -169,7 +169,7 @@ func TestSendVideo(t *testing.T) {
 	filePath := "./test_data/test_video.mp4"
 	msg, err := bot.SendVideo(chatid, filePath, nil)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println(err.Error())
 		assert.Fail("Bot sendVideo error")
 	}
 	assert.NotEmpty(msg.Video.FileId)
@@ -183,7 +183,7 @@ func TestSendVoice(t *testing.T) {
 	filePath := "./test_data/record.ogg"
 	msg, err := bot.SendVoice(chatid, filePath, nil)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println(err.Error())
 		assert.Fail("Bot sendVOice error")
 	}
 	assert.NotEmpty(msg.Voice.FileId)
@@ -222,7 +222,7 @@ func TestGetUserProfilePhotos(t *testing.T) {
 	bot := InitTeleBot(token)
 	photos, err := bot.GetUserProfilePhotos(chatid, nil)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println(err.Error())
 		assert.Fail("Bot get User Profile phtots fail.")
 	}
 	assert.True(len(*photos.Photos) > 0)
